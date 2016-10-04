@@ -14,7 +14,7 @@ describe('index', () => {
         expect(all.polyglotReducer).toBeDefined();
     });
     it('exports selectors', () => {
-        expect(all.getT).toBeDefined();
+        expect(all.getP).toBeDefined();
         expect(all.getLocale).toBeDefined();
     });
 });

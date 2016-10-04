@@ -1,11 +1,13 @@
-import { path } from 'ramda';
+import { path, compose, adjust, toUpper, join } from 'ramda';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
 
-const getPhrases = path(['polyglot', 'phrases']);
+const capitalize = compose(join(''), adjust(toUpper, 0));
 
-export const getLocale = path(['polyglot', 'locale']);
-export const getT = createSelector(
+const getPhrases = path(['polyglot', 'phrases']);
+const getLocale = path(['polyglot', 'locale']);
+
+const getTranslation = createSelector(
     getLocale,
     getPhrases,
     (locale, phrases) => new Polyglot({
@@ -13,3 +15,13 @@ export const getT = createSelector(
         phrases,
     }).t
 );
+const getTranslationCapitalized = compose(capitalize, getTranslation);
+const getTranslationUpperCased = compose(toUpper, getTranslation);
+
+const getP = state => ({
+    t: getTranslation(state),
+    tc: getTranslationCapitalized(state),
+    tu: getTranslationUpperCased(state),
+});
+
+export { getP, getLocale };
