@@ -69,6 +69,7 @@
     "quotes": ["warn", "single", "avoid-escape"], // specify whether double or single quotes should be used
     "keyword-spacing": ["warn", {"before": true, "after": true}], // require a space after certain keywords (off by default)
     "linebreak-style": [0],
+    "arrow-parens": [0],
     // Import
     "import/no-extraneous-dependencies": [0],
     "import/prefer-default-export": [0],
