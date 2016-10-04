@@ -2,7 +2,7 @@ import * as all from './';
 
 describe('index', () => {
     it('exports middleware', () => {
-        expect(all.polyglotMiddleware).toBeDefined();
+        expect(all.createPolyglotMiddleware).toBeDefined();
     });
     it('exports SET_LANGUAGE action', () => {
         expect(all.SET_LANGUAGE).toBeDefined();
