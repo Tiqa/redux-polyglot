@@ -1,6 +1,6 @@
 # Redux Polyglot
 
-Toolset (actions, middleware, enhancer, selectors) for use polyglot with redux. 
+Toolset (actions, reducer, middleware, enhancer, selectors) for use polyglot with redux. 
 
 ## Installation
 
