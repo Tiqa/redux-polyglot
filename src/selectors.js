@@ -4,24 +4,31 @@ import Polyglot from 'node-polyglot';
 
 const capitalize = compose(join(''), adjust(toUpper, 0));
 
-const getPhrases = path(['polyglot', 'phrases']);
 const getLocale = path(['polyglot', 'locale']);
+const getPhrases = path(['polyglot', 'phrases']);
 
 const getTranslation = createSelector(
     getLocale,
     getPhrases,
-    (locale, phrases) => new Polyglot({
-        locale,
-        phrases,
-    }).t
+    (locale, phrases) => {
+        const p = new Polyglot({
+            locale,
+            phrases,
+        });
+        return p.t.bind(p);
+    }
 );
-const getTranslationCapitalized = compose(capitalize, getTranslation);
-const getTranslationUpperCased = compose(toUpper, getTranslation);
+const getTranslationCapitalized = state => compose(capitalize, getTranslation(state));
+const getTranslationUpperCased = state => compose(toUpper, getTranslation(state));
 
-const getP = state => ({
-    t: getTranslation(state),
-    tc: getTranslationCapitalized(state),
-    tu: getTranslationUpperCased(state),
-});
+const getP = state => {
+    if (!getLocale(state) || !getPhrases(state))
+        return undefined;
+    return {
+        t: getTranslation(state),
+        tc: getTranslationCapitalized(state),
+        tu: getTranslationUpperCased(state),
+    };
+};
 
 export { getP, getLocale };
