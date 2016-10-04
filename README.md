@@ -1,10 +1,10 @@
-# Redux Polyglot
+# redux-polyglot
 
-Toolset (actions, reducer, middleware, enhancer, selectors) for use polyglot with redux. 
+Toolset (actions, reducer, middleware, enhancer, selectors) for use polyglot with redux.
 
 ## Installation
 
-You can NOT YET install AT Tracker using npm:
+You can NOT YET install redux-polyglot using npm:
 
     npm install redux-polyglot
 
