@@ -17,4 +17,7 @@ describe('index', () => {
         expect(all.getP).toBeDefined();
         expect(all.getLocale).toBeDefined();
     });
+    it('exports translate enhancer', () => {
+        expect(all.translate).toBeDefined();
+    });
 });
