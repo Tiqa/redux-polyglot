@@ -1,3 +1,5 @@
-import React from 'react';
+import { connect } from 'react-redux';
+import { getP } from './selectors';
 
-export const translate = () => 42;
+const mapStateToProps = state => ({ p: getP(state) });
+export const translate = connect(mapStateToProps);
