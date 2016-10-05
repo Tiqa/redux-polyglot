@@ -1,13 +1,61 @@
-// import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-// import { polyglotReducer } from './reducer';
+import { polyglotReducer } from './reducer';
 import { createPolyglotMiddleware } from './middleware';
 
-// const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
-// const createFakeStore = (middleware) => createStore(createRootReducer(), {}, middleware);
+const CATCHED_ACTION = 'CATCHED_ACTION';
+const UNCATCHED_ACTION = 'UNCATCHED_ACTION';
+
+const spy = impl => {
+    const fn = jest.fn().mockImplementation(impl);
+    fn.constructor = Function; // for being appear like a vanilla JS Function.
+    return fn;
+};
+
+const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
+const createFakeStore = (getLocale, getPhrases) => {
+    const middleware = createPolyglotMiddleware(CATCHED_ACTION, getLocale, getPhrases);
+    return createStore(createRootReducer(), {}, applyMiddleware(middleware));
+};
 
 describe('middleware', () => {
-    describe('errors', () => {
+    let fakePhrases = { hello: 'hello' };
+    const getLocale = spy(() => 'en');
+    const getPhrases = spy(() => fakePhrases);
+    const fakeStore = createFakeStore(getLocale, getPhrases);
+
+    it('should do not impact the store when action is unknown.', () => {
+        const unsubscribe = fakeStore.subscribe(() => {
+            expect(fakeStore.getState()).toEqual({
+                polyglot: { locale: null, phrases: null },
+            });
+        });
+        fakeStore.dispatch({ type: UNCATCHED_ACTION });
+        unsubscribe();
+    });
+
+    it('should impact the store when action is CATCHED_ACTION.', () => {
+        const unsubscribe = fakeStore.subscribe(() => {
+            expect(fakeStore.getState()).toEqual({
+                polyglot: { locale: 'en', phrases: { hello: 'hello' } },
+            });
+        });
+        fakeStore.dispatch({ type: CATCHED_ACTION });
+        unsubscribe();
+    });
+
+    it('should not impact the store when locale is same.', () => {
+        const unsubscribe = fakeStore.subscribe(() => {
+            expect(fakeStore.getState()).toEqual({
+                polyglot: { locale: 'en', phrases: { hello: 'hello' } },
+            });
+        });
+        fakePhrases = null;
+        fakeStore.dispatch({ type: CATCHED_ACTION });
+        unsubscribe();
+    });
+
+    describe('catch errors', () => {
         const errorMissing = 'polyglotMiddleware : missing parameters.';
         const errorFirst = 'polyglotMiddleware : first parameter must be a string.';
         const errorSecond = 'polyglotMiddleware : second parameter must be a function.';
