@@ -4,6 +4,7 @@
     "mocha": true
   },
   "parser": "babel-eslint",
+  "plugins": ["react"],
   "extends": "airbnb",
   "ecmaFeatures": {
     "arrowFunctions": true,
@@ -73,5 +74,7 @@
     // Import
     "import/no-extraneous-dependencies": [0],
     "import/prefer-default-export": [0],
+    // React
+    "react/jsx-indent-props": ["warn", 4]
   }
 }
