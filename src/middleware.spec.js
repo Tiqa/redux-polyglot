@@ -21,7 +21,7 @@ const createFakeStore = (getLocale, getPhrases) => {
 describe('middleware', () => {
     let fakePhrases = { hello: 'hello' };
     const getLocale = spy(() => 'en');
-    const getPhrases = spy(() => fakePhrases);
+    const getPhrases = spy(() => new Promise((resolve) => resolve(fakePhrases)));
     const fakeStore = createFakeStore(getLocale, getPhrases);
 
     it('should do not impact the store when action is unknown.', () => {

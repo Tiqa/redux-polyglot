@@ -22,10 +22,13 @@ export const createPolyglotMiddleware = (catchedActionType, getLocale, getPhrase
             const locale = getLocale(action);
             const previousLocale = store.getState().polyglot.locale;
             if (previousLocale !== locale) {
-                const phrases = getPhrases(locale);
-                store.dispatch(setLanguage(locale, phrases));
+                getPhrases(locale).then(phrases => {
+                    store.dispatch(setLanguage(locale, phrases));
+                    next(action);
+                });
+                return;
             }
         }
-        return next(action);
+        next(action);
     };
 };
