@@ -24,11 +24,9 @@ export const createPolyglotMiddleware = (catchedActionType, getLocale, getPhrase
             if (previousLocale !== locale) {
                 getPhrases(locale).then(phrases => {
                     store.dispatch(setLanguage(locale, phrases));
-                    next(action);
                 });
-                return;
             }
         }
-        next(action);
+        return next(action);
     };
 };
