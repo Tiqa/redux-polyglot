@@ -31,7 +31,7 @@ describe('middleware', () => {
         getPhrases.mockClear();
     });
 
-    it('should do not impact the store when action is unknown.', () => {
+    it('should not impact the store when action is unknown.', () => {
         const listener = spy(() => {
             expect(getLocale).not.toBeCalled();
             expect(getPhrases).not.toBeCalled();
@@ -65,7 +65,7 @@ describe('middleware', () => {
         fakeStore.dispatch({ type: CATCHED_ACTION });
     });
 
-    it('should not impact the store when locale is same.', () => {
+    it('should not impact the store when locale is same as previous one.', () => {
         fakePhrases = {};
         const oldState = fakeStore.getState();
         const listener = spy(() => {
