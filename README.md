@@ -72,9 +72,10 @@ You can use `connect()` from `react-redux` and the getP() selector, for get the 
 
 what is `props.p` ?
 it's just an object with 3 functions inside :
-- t: translation (the original polyglot `t` function)
-- tc: translation capitalized
-- tu: translation upper-cased
+- t: String -> String : translation (the original polyglot `t` function)
+- tc: String -> String : translation capitalized
+- tu: String -> String : translation upper-cased
+- tm: (String -> String) -> String -> String :  translation using a custom morphism
 
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 

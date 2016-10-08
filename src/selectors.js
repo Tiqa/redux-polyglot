@@ -20,6 +20,7 @@ const getTranslation = createSelector(
 );
 const getTranslationCapitalized = state => compose(capitalize, getTranslation(state));
 const getTranslationUpperCased = state => compose(toUpper, getTranslation(state));
+const getTranslationMorphed = state => f => compose(f, getTranslation(state));
 
 const getP = state => {
     if (!getLocale(state) || !getPhrases(state))
@@ -28,6 +29,7 @@ const getP = state => {
         t: getTranslation(state),
         tc: getTranslationCapitalized(state),
         tu: getTranslationUpperCased(state),
+        tm: getTranslationMorphed(state),
     };
 };
 
