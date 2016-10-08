@@ -76,6 +76,8 @@ it's just an object with 3 functions inside :
 - tc: translation capitalized
 - tu: translation upper-cased
 
+(see [polyglot documentation](http://airbnb.io/polyglot.js/))
+
 #### with translate() enhancer
 `props.p` can be easly provided to a component :
 ```javascript
@@ -93,17 +95,3 @@ These folks keep the project moving and are resources for help:
 * Jérémy Vincent ([@jvincent42](https://github.com/jvincent42)) - developer
 * Jalil Arfaoui ([@JalilArfaoui](https://github.com/JalilArfaoui)) - developer
 * Guillaume ARM ([@garm](https://github.com/guillaumearm/)) - developer
-
-## Releases
-
-Not released yet
-
-## Filing Issues
-
-Not released yet
-
-## Frequently Asked Questions
-
-### Where to ask for help?
-
-Not here
