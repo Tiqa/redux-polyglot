@@ -78,6 +78,7 @@ it's just an object with 3 functions inside :
 
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
+### If you use React
 #### with translate() enhancer
 `props.p` can be easly provided to a component :
 ```javascript
@@ -86,7 +87,7 @@ const DummyComponentWithPProps = translate(DummyComponent);
 ```
 
 #### get locale in a component
-`getLocale()` selector is at your disposition. use it inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options).
+`getLocale()` selector is at your disposition. use it inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
 
 ## Team
 
