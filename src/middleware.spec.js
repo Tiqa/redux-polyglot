@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import { polyglotReducer } from './reducer';
@@ -80,7 +81,7 @@ describe('middleware', () => {
 
     describe('catch errors', () => {
         const errorMissing = 'polyglotMiddleware : missing parameters.';
-        const errorFirst = 'polyglotMiddleware : first parameter must be a string.';
+        const errorFirst = 'polyglotMiddleware : first parameter must be a string or an array of string.';
         const errorSecond = 'polyglotMiddleware : second parameter must be a function.';
         const errorThird = 'polyglotMiddleware : third parameter must be a function.';
 
@@ -102,8 +103,16 @@ describe('middleware', () => {
             expect(() => createPolyglotMiddleware(first, second)).toThrowError(errorMissing);
         });
 
-        it('should throw an error when first parameter is not a string', () => {
+        it('should throw an error when first parameter is not a string or an array', () => {
             expect(() => createMiddleware(_badParams_, second, third)).toThrowError(errorFirst);
+        });
+
+        it('should not throw an error when first parameter is a string', () => {
+            expect(() => createMiddleware(first, second, third)).not.toThrow();
+        });
+
+        it('should not throw an error when first parameter is an array', () => {
+            expect(() => createMiddleware([], second, third)).not.toThrow();
         });
 
         it('should throw an error when second parameter is not a string', () => {
