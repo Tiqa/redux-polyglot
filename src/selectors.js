@@ -18,9 +18,9 @@ const getTranslation = createSelector(
         return p.t.bind(p);
     }
 );
-const getTranslationCapitalized = state => compose(capitalize, getTranslation(state));
-const getTranslationUpperCased = state => compose(toUpper, getTranslation(state));
 const getTranslationMorphed = state => f => compose(f, getTranslation(state));
+const getTranslationUpperCased = state => getTranslationMorphed(state)(toUpper);
+const getTranslationCapitalized = state => getTranslationMorphed(state)(capitalize);
 
 const getP = state => {
     if (!getLocale(state) || !getPhrases(state))
