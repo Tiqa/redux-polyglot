@@ -3,12 +3,16 @@ import { setLanguage } from './actions';
 
 const isString = is(String);
 const isFunction = is(Function);
+const isArray = Array.isArray;
 
 const checkParams = (catchedActionType, getLocale, getPhrases) => {
     if (!catchedActionType || !getLocale || !getPhrases)
         throw (new Error('polyglotMiddleware : missing parameters.'));
-    if (!isString(catchedActionType))
-        throw (new Error('polyglotMiddleware : first parameter must be a string.'));
+    if (!isString(catchedActionType) && !isArray(catchedActionType)) {
+        throw (new Error(
+            'polyglotMiddleware : first parameter must be a string or an array of string.'
+        ));
+    }
     if (!isFunction(getLocale))
         throw (new Error('polyglotMiddleware : second parameter must be a function.'));
     if (!isFunction(getPhrases))
