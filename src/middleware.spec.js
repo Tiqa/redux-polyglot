@@ -5,6 +5,7 @@ import { polyglotReducer } from './reducer';
 import { createPolyglotMiddleware } from './middleware';
 
 const CATCHED_ACTION = 'CATCHED_ACTION';
+const OTHER_CATCHED_ACTION = 'OTHER_CATCHED_ACTION';
 const UNCATCHED_ACTION = 'UNCATCHED_ACTION';
 
 const spy = impl => {
@@ -15,7 +16,9 @@ const spy = impl => {
 
 const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
 const createFakeStore = (getLocale, getPhrases) => {
-    const middleware = createPolyglotMiddleware(CATCHED_ACTION, getLocale, getPhrases);
+    const middleware = createPolyglotMiddleware(
+        [CATCHED_ACTION, OTHER_CATCHED_ACTION], getLocale, getPhrases
+    );
     return createStore(createRootReducer(), {}, applyMiddleware(middleware));
 };
 

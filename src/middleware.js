@@ -5,10 +5,10 @@ const isString = is(String);
 const isFunction = is(Function);
 const isArray = Array.isArray;
 
-const checkParams = (catchedActionType, getLocale, getPhrases) => {
-    if (!catchedActionType || !getLocale || !getPhrases)
+const checkParams = (catchedAction, getLocale, getPhrases) => {
+    if (!catchedAction || !getLocale || !getPhrases)
         throw (new Error('polyglotMiddleware : missing parameters.'));
-    if (!isString(catchedActionType) && !isArray(catchedActionType)) {
+    if (!isString(catchedAction) && !isArray(catchedAction)) {
         throw (new Error(
             'polyglotMiddleware : first parameter must be a string or an array of string.'
         ));
@@ -19,15 +19,16 @@ const checkParams = (catchedActionType, getLocale, getPhrases) => {
         throw (new Error('polyglotMiddleware : third parameter must be a function.'));
 };
 
-export const createPolyglotMiddleware = (catchedActionType, getLocale, getPhrases) => {
-    checkParams(catchedActionType, getLocale, getPhrases);
-    return store => next => action => {
-        if (catchedActionType === action.type) {
+export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) => {
+    checkParams(catchedAction, getLocale, getPhrases);
+    const actions = isArray(catchedAction) ? catchedAction : [catchedAction];
+    return ({ dispatch, getState }) => next => action => {
+        if (actions.includes(action.type)) {
             const locale = getLocale(action);
-            const previousLocale = store.getState().polyglot.locale;
+            const previousLocale = getState().polyglot.locale;
             if (previousLocale !== locale) {
                 getPhrases(locale).then(phrases => {
-                    store.dispatch(setLanguage(locale, phrases));
+                    dispatch(setLanguage(locale, phrases));
                 });
             }
         }
