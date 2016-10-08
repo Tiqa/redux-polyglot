@@ -38,7 +38,7 @@ describe('selectors', () => {
             expect(p.tu('hello')).toBe('BONJOUR');
         });
 
-        it('should translate "hello" to "BONJOUR" (morphed with upper-case)', () => {
+        it('should translate "hello" to "BONJOUR" (morphed with upper-case function)', () => {
             expect(p.tm(toUpper)('hello')).toBe('BONJOUR');
         });
     });
