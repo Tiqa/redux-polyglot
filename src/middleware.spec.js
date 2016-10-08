@@ -21,7 +21,9 @@ const createFakeStore = (getLocale, getPhrases) => {
 describe('middleware', () => {
     let fakePhrases = { hello: 'hello' };
     const getLocale = spy(() => 'en');
-    const getPhrases = spy(() => new Promise((resolve) => resolve(fakePhrases)));
+    const getPhrases = spy(() => new Promise((resolve) => (
+        setTimeout(resolve, 1, fakePhrases)
+    )));
     const fakeStore = createFakeStore(getLocale, getPhrases);
 
     beforeEach(() => {
@@ -29,7 +31,7 @@ describe('middleware', () => {
         getPhrases.mockClear();
     });
 
-    it('should do not impact the store when action is unknown.', (cb) => {
+    it('should do not impact the store when action is unknown.', () => {
         const listener = spy(() => {
             expect(getLocale).not.toBeCalled();
             expect(getPhrases).not.toBeCalled();
@@ -39,47 +41,41 @@ describe('middleware', () => {
         });
         const unsubscribe = fakeStore.subscribe(listener);
         fakeStore.dispatch({ type: UNCATCHED_ACTION });
-        setImmediate(() => {
-            unsubscribe();
-            expect(listener).toHaveBeenCalledTimes(1);
-            cb();
-        });
+        unsubscribe();
+        expect(listener).toHaveBeenCalledTimes(1);
     });
 
     it('should impact the store when action is CATCHED_ACTION.', (cb) => {
+        let counter = 0;
+        let unsubscribe;
         const listener = spy(() => {
-            expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
-            expect(getPhrases).toBeCalledWith('en');
-            expect(fakeStore.getState()).toEqual({
-                polyglot: { locale: 'en', phrases: { hello: 'hello' } },
-            });
+            counter += 1;
+            if (counter === 2) {
+                expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
+                expect(getPhrases).toBeCalledWith('en');
+                expect(fakeStore.getState()).toEqual({
+                    polyglot: { locale: 'en', phrases: { hello: 'hello' } },
+                });
+                unsubscribe();
+                expect(listener).toHaveBeenCalledTimes(2);
+                cb();
+            }
         });
-        const unsubscribe = fakeStore.subscribe(listener);
+        unsubscribe = fakeStore.subscribe(listener);
         fakeStore.dispatch({ type: CATCHED_ACTION });
-        setImmediate(() => {
-            unsubscribe();
-            // called twice because CATCHED_ACTION and @@polyglot/SET_LANGUAGE are dispatched //
-            expect(listener).toHaveBeenCalledTimes(2);
-            // ****************************************************************************** //
-            cb();
-        });
     });
 
-    it('should not impact the store when locale is same.', (cb) => {
-        fakePhrases = null;
+    it('should not impact the store when locale is same.', () => {
+        fakePhrases = {};
+        const oldState = fakeStore.getState();
         const listener = spy(() => {
             expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
             expect(getPhrases).not.toBeCalled();
-            expect(fakeStore.getState()).toEqual({
-                polyglot: { locale: 'en', phrases: { hello: 'hello' } },
-            });
+            expect(fakeStore.getState()).toEqual(oldState);
         });
         const unsubscribe = fakeStore.subscribe(listener);
         fakeStore.dispatch({ type: CATCHED_ACTION });
-        setImmediate(() => {
-            unsubscribe();
-            cb();
-        });
+        unsubscribe();
     });
 
     describe('catch errors', () => {
