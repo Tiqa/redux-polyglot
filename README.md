@@ -34,6 +34,8 @@ store.dispatch(setLanguage('en', { yolo: 'yolo' }));
 ```
 second parameter should be `polyglot phrases` (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
+note: if language phrases already exists, this will be overwrite the corresponding object state.
+
 #### with middleware
 The `createPolyglotMiddleware()` function allow you to configure your middleware for tell him how to change the language.
 
@@ -65,6 +67,8 @@ const polyglotMiddleware = createPolyglotMiddleware(
 
 const store = createStore(rootReducer, {}, applyMiddleware(polyglotMiddleware));
 ```
+
+note: if new locale setted is same as previous, nothing happens.
 
 ### Translation
 #### with getP() selector
