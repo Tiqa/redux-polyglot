@@ -5,10 +5,10 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --coverage",
-    "test-all": "npm run -s test ; npm run -s lint",
+    "test-all": "npm run -s prepublish",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
-    "prepublish": "npm run -s test-all",
+    "prepublish": "node scripts/prepublish.js",
     "postpublish": "--- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
   },
