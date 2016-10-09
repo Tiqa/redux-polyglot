@@ -1,8 +1,13 @@
-import { path, compose, adjust, toUpper, join } from 'ramda';
+import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
 
-const capitalize = compose(join(''), adjust(toUpper, 0));
+const path = arrPath => obj => arrPath.reduce((cursor, key) => cursor && cursor[key], obj);
+const toUpper = str => str.toUpperCase();
+const adjustString = (f, index) => str => (
+    str.substr(0, index) + f(str[index]) + str.substr(index + 1)
+);
+const capitalize = adjustString(toUpper, 0);
 
 const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);

@@ -1,8 +1,10 @@
-import { is } from 'ramda';
 import { setLanguage } from './actions';
 
-const isString = is(String);
-const isFunction = is(Function);
+// eslint-disable-next-line valid-typeof
+const is = type => x => typeof x === type;
+
+const isString = is('string');
+const isFunction = is('function');
 const isArray = Array.isArray;
 
 const checkParams = (catchedAction, getLocale, getPhrases) => {
