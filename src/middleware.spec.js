@@ -24,7 +24,7 @@ const createFakeStore = (getLocale, getPhrases) => {
 
 describe('middleware', () => {
     let fakePhrases = { hello: 'hello' };
-    const getLocale = spy(() => 'en');
+    const getLocale = spy(action => (action.payload && action.payload.locale) || 'en');
     const getPhrases = spy(() => new Promise((resolve) => (
         setTimeout(resolve, 1, fakePhrases)
     )));
@@ -69,17 +69,23 @@ describe('middleware', () => {
         fakeStore.dispatch({ type: CATCHED_ACTION });
     });
 
-    it('doesn\'t impact the store when locale is same as previous one.', () => {
-        fakePhrases = {};
+    it('impacts the store when locale is same as previous one.', (cb) => {
         const oldState = fakeStore.getState();
+        fakePhrases = {};
+        let counter = 0;
+        let unsubscribe;
         const listener = spy(() => {
-            expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
-            expect(getPhrases).not.toBeCalled();
-            expect(fakeStore.getState()).toEqual(oldState);
+            counter += 1;
+            expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
+            expect(getPhrases).toBeCalledWith('fr');
+            if (counter === 2) {
+                expect(fakeStore.getState()).not.toEqual(oldState);
+                unsubscribe();
+                cb();
+            }
         });
-        const unsubscribe = fakeStore.subscribe(listener);
-        fakeStore.dispatch({ type: CATCHED_ACTION });
-        unsubscribe();
+        unsubscribe = fakeStore.subscribe(listener);
+        fakeStore.dispatch({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
     });
 
     describe('Errors catching', () => {
