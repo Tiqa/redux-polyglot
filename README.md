@@ -4,7 +4,7 @@ Toolset (actions, reducer, middleware, enhancer, selectors) to help use Polyglot
 
 ## Installation
 ```
-    npm install redux-polyglot
+    npm install --save redux-polyglot
 ```
 (not published yet)
 
