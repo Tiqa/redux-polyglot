@@ -1,6 +1,6 @@
 {
   "name": "redux-polyglot",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Tool for using Polyglot.js with Redux",
   "main": "./dist/index.js",
   "scripts": {
