@@ -5,12 +5,12 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --coverage",
-    "test-all": "npm test ; npm run -s lint",
+    "test-all": "npm run -s test ; npm run -s lint",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
-    "lint": "eslint src ; echo lint OK.",
     "prepublish": "npm run -s test-all",
-    "postpublish": "--- PUBLISHED ---"
+    "postpublish": "--- PUBLISHED ---",
+    "lint": "eslint --max-warnings 0 src"
   },
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
@@ -47,6 +47,7 @@
     "react": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-test-renderer": "^15.3.2",
+    "shelljs": "^0.7.4",
     "webpack": "^1.13.2"
   },
   "peerDependencies": {
