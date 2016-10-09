@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --coverage",
     "watch-test": "jest --watch --coverage",
-    "wtest": "npm run watch-test"
+    "wtest": "npm run watch-test",
+    "lint": "eslint src"
   },
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
