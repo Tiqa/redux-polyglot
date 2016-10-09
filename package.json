@@ -8,7 +8,9 @@
     "test-all": "npm test ; npm run -s lint",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
-    "lint": "eslint src ; echo lint OK."
+    "lint": "eslint src ; echo lint OK.",
+    "prepublish": "npm run -s test-all",
+    "postpublish": "--- PUBLISHED ---"
   },
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
