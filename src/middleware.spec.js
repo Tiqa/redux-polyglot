@@ -131,5 +131,15 @@ describe('middleware', () => {
         it('throws an error when thrid parameter is not a string', () => {
             expect(() => createMiddleware(first, second, _badParams_)).toThrowError(errorThird);
         });
+
+        describe('reducer', () => {
+            const polyglotMiddleware = createPolyglotMiddleware([], getLocale, getPhrases);
+            const rootReducer = combineReducers({ test: (state = 42) => state });
+            it('throws an error when polyglot is not in "state.polyglot"', () => {
+                expect(() => {
+                    createStore(rootReducer, {}, applyMiddleware(polyglotMiddleware));
+                }).toThrowError('polyglotReducer : need to be store in "state.polyglot"');
+            });
+        });
     });
 });
