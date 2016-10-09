@@ -1,7 +1,20 @@
-import { toUpper, curry, evolve, is, pipe, values, all, equals } from 'ramda';
+import { toUpper, evolve, is, pipe, values, all, equals } from 'ramda';
 import { getP, getLocale } from './selectors';
 
-const on = curry((x, f) => f(x));
+const isValidPolyglot = pipe(
+    evolve({
+        phrases: is(Object),
+        currentLocale: is(String),
+        allowMissing: is(Boolean),
+        warn: is(Function),
+        t: is(Function),
+        tc: is(Function),
+        tu: is(Function),
+        tm: is(Function),
+    }),
+    values,
+    all(equals(true)),
+);
 
 const fakeState = {
     polyglot: {
@@ -25,22 +38,7 @@ describe('selectors', () => {
         const p = getP(fakeState);
 
         it('gives a valid redux-polyglot object', () => {
-            expect(
-                on(p)(pipe(
-                    evolve({
-                        phrases: is(Object),
-                        currentLocale: is(String),
-                        allowMissing: is(Boolean),
-                        warn: is(Function),
-                        t: is(Function),
-                        tc: is(Function),
-                        tu: is(Function),
-                        tm: is(Function),
-                    }),
-                    values,
-                    all(equals(true)),
-                ))
-            ).toBe(true);
+            expect(isValidPolyglot(p)).toBe(true);
         });
 
         it('doesn\'t crash when state is an empty object', () => {
