@@ -7,6 +7,8 @@ const noError = result => result.code === 0;
 
 const execOrDie = (cmd, text) => (noError(exec(cmd)) ? console.info(text) : exit(-1));
 
+execOrDie('npm run -s clean', '--- CLEAN ---');
 execOrDie('npm run -s test', '--- Tests OK ---');
 execOrDie('npm run -s lint', '--- Lint OK ---');
+execOrDie('npm run -s build', '--- BUILD ---');
 echo('--- PREPUBLISH DONE ---');

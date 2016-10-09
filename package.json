@@ -4,6 +4,8 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
+    "build": "webpack",
+    "clean": "rimraf ./dist",
     "test": "jest --coverage",
     "test-all": "npm run -s prepublish",
     "watch-test": "jest --watch --coverage",
@@ -47,6 +49,7 @@
     "react": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-test-renderer": "^15.3.2",
+    "rimraf": "^2.5.4",
     "shelljs": "^0.7.4",
     "webpack": "^1.13.2"
   },
