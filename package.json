@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "node-polyglot": "^2.0.0",
-    "ramda": "^0.22.1",
     "redux": "^3.6.0",
     "reselect": "^2.5.4"
   },
@@ -42,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.1",
     "eslint-plugin-react": "^6.2.0",
     "jest": "^15.1.1",
+    "ramda": "^0.22.1",
     "react": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-test-renderer": "^15.3.2",
