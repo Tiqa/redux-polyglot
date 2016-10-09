@@ -1,12 +1,15 @@
 # redux-polyglot
 
-Toolset (actions, reducer, middleware, enhancer, selectors) for use polyglot with redux.
+Toolset (actions, reducer, middleware, enhancer, selectors) to help use Polyglot with Redux.
 
 ## Installation
 ```
-    npm install git+http://vpalm/tfs/SIVP/VPVoyages/_git/vpm-redux-polyglot
+    npm install --save redux-polyglot
 ```
-## Usage
+(not published yet)
+
+## Setup
+
 First of all, you need the polyglot reducer in your rootReducer :
 ```javascript
 import { createStore, combineReducers } from 'redux';
@@ -19,13 +22,15 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, {});
 
 ```
+## Usage
 
 ### Set the language
-##### without middleware
+#### without middleware
 You can use redux-polyglot without his middleware, for this you need the `setLanguage()` action creator :
 
 - ```setLanguage :: String -> Object -> Action```
 
+Example:
 ```javascript
 import { setLanguage } from 'redux-polyglot';
 
@@ -33,20 +38,20 @@ store.dispatch(setLanguage('en', { yolo: 'yolo' }));
 ```
 second parameter should be `polyglot phrases` (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
-note: if language phrases already exists, this will be overwrite the corresponding object state.
+note: if language phrases already exists, this will overwrite the corresponding object state.
 
 #### with middleware
-The `createPolyglotMiddleware()` function allow you to configure your middleware for tell him how to change the language.
+The `createPolyglotMiddleware()` function allow you to automatically update language and phrases by listening to specific action(s).
 
-for this, you can catch a specific action, and find the locale in the payload, then you can asynchronously load the `polyglot phrases` (with Promise).
+The middleware catches specific action(s), and find the locale in the payload, and then [asynchronously] load the `polyglot phrases` (with Promise).
 
-it takes 3 parameters and return a middleware :
-- 1 - `actionToCatch :: String`
-    - the type of the action you want to catch
+It takes 4 parameters and return a middleware :
+- 1 - `actionToCatch :: String | Array<String>`
+    - the type(s) of the action to catch
 - 2 - `getLocale :: Object -> String`
-    - a function that take the catched action and return selected locale.
+    - a function that take the catched action as parameter and return new language.
 - 3 - `getPhrases :: String -> Promise Object`
-    - a function that take the locale (provided by `setLocale`) and return a Promise of Object ( Object should be `polyglot phrases` )
+    - a function that take the language (as provided by `setLocale`) and return a Promise of Object ( Object should be `polyglot phrases` )
 
 the middleware will catch `actionToCatch`
 
@@ -76,14 +81,13 @@ const polyglotMiddleware = createPolyglotMiddleware(
 )
 ```
 
-note: if new locale setted is same as previous, nothing happens.
+note: if language has not changed, nothing happens.
 
 ### Translation
 #### with getP() selector
-You can use `connect()` from `react-redux` and the getP() selector, for get the `p` property in your component.
+You can use the `getP(state)` selector.
 
-what is `props.p` ?
-it's just an object with 3 functions inside :
+It returns an object with 4 functions inside :
 - t: String -> String : translation (the original polyglot `t` function)
 - tc: String -> String : translation capitalized
 - tu: String -> String : translation upper-cased
@@ -91,16 +95,34 @@ it's just an object with 3 functions inside :
 
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
-### If you use React
-#### with translate() enhancer
-`props.p` can be easly provided to a component :
+#### Getting current locale
+`getLocale(state)` selector returns current language. 
+
+#### If you use React
+
+You can use `connect()` from `react-redux`, and the getP() selector, to get the `p` prop in your component.
+
+Proptype: 
+````javascript
+p: PropTypes.shape({
+    t: PropTypes.func.isRequired,
+    tc: PropTypes.func.isRequired,
+    tu: PropTypes.func.isRequired,
+    tm: PropTypes.func.isRequired,
+}),
+````
+
+##### translate() enhancer
+`props.p` can be also be provided easily to a component with the translate enhancer :
 ```javascript
 import { translate } from 'redux-polyglot';
 const DummyComponentWithPProps = translate(DummyComponent);
 ```
 
-#### get locale in a component
-`getLocale()` selector is at your disposition. use it inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
+##### get locale in a component
+You can also use the `getLocale()` selector inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
+
+Proptype: ````locale: PropTypes.string,````
 
 ## Team
 
@@ -108,4 +130,4 @@ These folks keep the project moving and are resources for help:
 
 * Jérémy Vincent ([@jvincent42](https://github.com/jvincent42)) - developer
 * Jalil Arfaoui ([@JalilArfaoui](https://github.com/JalilArfaoui)) - developer
-* Guillaume ARM ([@garm](https://github.com/guillaumearm/)) - developer
+* Guillaume ARM ([@guillaumearm](https://github.com/guillaumearm/)) - developer

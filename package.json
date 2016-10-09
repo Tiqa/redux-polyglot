@@ -8,8 +8,8 @@
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test"
   },
-  "author": "@jalilarfaoui, @jvincent42",
-  "license": "Copyright Vente-privee.com",
+  "author": "@garm, @jalilarfaoui, @jvincent42",
+  "license": "MIT",
   "jest": {
     "moduleFileExtensions": [
       "js",
