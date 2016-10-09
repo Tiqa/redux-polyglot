@@ -1,0 +1,7 @@
+.eslintrc
+.babelrc
+CONTRIBUTING.md
+webpack.config.js
+scripts
+*.spec.js
+coverage
