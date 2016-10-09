@@ -1,3 +1,4 @@
+import { toUpper } from 'ramda';
 import { getP, getLocale } from './selectors';
 
 const fakeState = {
@@ -35,6 +36,10 @@ describe('selectors', () => {
 
         it('should translate "hello" to "BONJOUR" (upper-case)', () => {
             expect(p.tu('hello')).toBe('BONJOUR');
+        });
+
+        it('should translate "hello" to "BONJOUR" (morphed with upper-case function)', () => {
+            expect(p.tm(toUpper)('hello')).toBe('BONJOUR');
         });
     });
 });
