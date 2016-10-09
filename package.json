@@ -2,9 +2,9 @@
   "name": "redux-polyglot",
   "version": "1.0.1",
   "description": "Tool for using Polyglot.js with Redux",
-  "main": "./dist/redux-polyglot.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "babel src --out-dir dist --ignore '*.spec.js'",
     "clean": "rimraf ./dist",
     "test": "jest --coverage",
     "test-all": "npm run -s prepublish",
@@ -37,6 +37,9 @@
     "moduleFileExtensions": [
       "js",
       "jsx"
+    ],
+    "testPathDirs": [
+      "src"
     ]
   },
   "dependencies": {
@@ -45,7 +48,7 @@
     "reselect": "^2.5.4"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
+    "babel-cli": "^6.16.0",
     "babel-core": "^6.14.0",
     "babel-eslint": "^6.1.2",
     "babel-jest": "^15.0.0",
