@@ -1,5 +1,5 @@
 import * as all from './';
-import { translate } from './translate';
+import translate from './translate';
 
 describe('index', () => {
     it('exports middleware', () => {

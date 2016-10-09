@@ -6,8 +6,11 @@ const getDisplayName = WrappedComponent => (
 );
 
 const mapStateToProps = state => ({ p: getP(state) });
-export const translate = Component => {
+const translate = Component => {
     const Connected = connect(mapStateToProps)(Component);
     Connected.displayName = `Translated(${getDisplayName(Connected.WrappedComponent)})`;
     return Connected;
 };
+
+export default translate;
+

@@ -72,7 +72,7 @@ const polyglotMiddleware = createPolyglotMiddleware(
 const store = createStore(rootReducer, {}, applyMiddleware(polyglotMiddleware));
 ```
 
-you can catch more than one action passing an array of action types: 
+you can catch more than one action passing an array of action types:
 ```javascript
 const polyglotMiddleware = createPolyglotMiddleware(
     ['FIRST_ACTION_TO_CATCH', 'SECOND_ACTION_TO_CATCH'],
@@ -96,13 +96,13 @@ It returns an object with 4 functions inside :
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
 #### Getting current locale
-`getLocale(state)` selector returns current language. 
+`getLocale(state)` selector returns current language.
 
 #### If you use React
 
 You can use `connect()` from `react-redux`, and the getP() selector, to get the `p` prop in your component.
 
-Proptype: 
+Proptype:
 ````javascript
 p: PropTypes.shape({
     t: PropTypes.func.isRequired,
@@ -115,7 +115,7 @@ p: PropTypes.shape({
 ##### translate() enhancer
 `props.p` can be also be provided easily to a component with the translate enhancer :
 ```javascript
-import { translate } from 'redux-polyglot';
+import translate from 'redux-polyglot/translate';
 const DummyComponentWithPProps = translate(DummyComponent);
 ```
 

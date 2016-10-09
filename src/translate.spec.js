@@ -4,7 +4,7 @@ import { createStore, combineReducers } from 'redux';
 import renderer from 'react-test-renderer';
 
 import { polyglotReducer } from './reducer';
-import { translate } from './translate';
+import translate from './translate';
 
 const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
 const fakeStore = createStore(createRootReducer(), {
