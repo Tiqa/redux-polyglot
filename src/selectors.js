@@ -7,7 +7,7 @@ const capitalize = compose(join(''), adjust(toUpper, 0));
 const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
 
-const getTranslation = createSelector(
+const getPolyglot = createSelector(
     getLocale,
     getPhrases,
     (locale, phrases) => {
@@ -15,9 +15,15 @@ const getTranslation = createSelector(
             locale,
             phrases,
         });
-        return p.t.bind(p);
+        return p;
     }
 );
+
+const getTranslation = createSelector(
+    getPolyglot,
+    p => p.t.bind(p)
+);
+
 const getTranslationMorphed = state => f => compose(f, getTranslation(state));
 const getTranslationUpperCased = state => getTranslationMorphed(state)(toUpper);
 const getTranslationCapitalized = state => getTranslationMorphed(state)(capitalize);
@@ -26,6 +32,7 @@ const getP = state => {
     if (!getLocale(state) || !getPhrases(state))
         return undefined;
     return {
+        ...getPolyglot(state),
         t: getTranslation(state),
         tc: getTranslationCapitalized(state),
         tu: getTranslationUpperCased(state),
