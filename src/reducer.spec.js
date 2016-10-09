@@ -25,11 +25,11 @@ describe('reducer', () => {
 
     beforeEach(() => checkUnknownAction(state));
 
-    it('should not update the state when action is unknown', () => {
+    it('doesn\'t update the state when action is unknown', () => {
         state = polyglotReducer(state, unknownAction);
     });
 
-    it('should update the state when action is SET_LANGUAGE', () => {
+    it('updates the state when action is SET_LANGUAGE', () => {
         state = polyglotReducer(state, setLanguageAction);
         expect(state).toEqual(setLanguageAction.payload);
     });

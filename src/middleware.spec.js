@@ -35,7 +35,7 @@ describe('middleware', () => {
         getPhrases.mockClear();
     });
 
-    it('should not impact the store when action is unknown.', () => {
+    it('doesn\'t impact the store when action is unknown.', () => {
         const listener = spy(() => {
             expect(getLocale).not.toBeCalled();
             expect(getPhrases).not.toBeCalled();
@@ -49,7 +49,7 @@ describe('middleware', () => {
         expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it('should impact the store when action is CATCHED_ACTION.', (cb) => {
+    it('impacts the store when action is CATCHED_ACTION.', (cb) => {
         let counter = 0;
         let unsubscribe;
         const listener = spy(() => {
@@ -69,7 +69,7 @@ describe('middleware', () => {
         fakeStore.dispatch({ type: CATCHED_ACTION });
     });
 
-    it('should not impact the store when locale is same as previous one.', () => {
+    it('doesn\'t impact the store when locale is same as previous one.', () => {
         fakePhrases = {};
         const oldState = fakeStore.getState();
         const listener = spy(() => {
@@ -82,7 +82,7 @@ describe('middleware', () => {
         unsubscribe();
     });
 
-    describe('catch errors', () => {
+    describe('Errors catching', () => {
         const errorMissing = 'polyglotMiddleware : missing parameters.';
         const errorFirst = 'polyglotMiddleware : first parameter must be a string or an array of string.';
         const errorSecond = 'polyglotMiddleware : second parameter must be a function.';
@@ -96,33 +96,33 @@ describe('middleware', () => {
 
         const createMiddleware = createPolyglotMiddleware;
 
-        it('should not crash when parameters all parameters are provided.', () => {
+        it('doesn\'t crash when all parameters are provided.', () => {
             createPolyglotMiddleware(first, second, third);
         });
 
-        it('should throw an error when createPolyglotMiddleware parameters are missing.', () => {
+        it('throws an error when createPolyglotMiddleware parameters are missing.', () => {
             expect(() => createPolyglotMiddleware()).toThrowError(errorMissing);
             expect(() => createPolyglotMiddleware(first)).toThrowError(errorMissing);
             expect(() => createPolyglotMiddleware(first, second)).toThrowError(errorMissing);
         });
 
-        it('should throw an error when first parameter is not a string or an array', () => {
+        it('throws an error when first parameter is not a string or an array', () => {
             expect(() => createMiddleware(_badParams_, second, third)).toThrowError(errorFirst);
         });
 
-        it('should not throw an error when first parameter is a string', () => {
+        it('doesn\'t throw an error when first parameter is a string', () => {
             expect(() => createMiddleware(first, second, third)).not.toThrow();
         });
 
-        it('should not throw an error when first parameter is an array', () => {
+        it('doesn\'t throw an error when first parameter is an array', () => {
             expect(() => createMiddleware([], second, third)).not.toThrow();
         });
 
-        it('should throw an error when second parameter is not a string', () => {
+        it('throws an error when second parameter is not a string', () => {
             expect(() => createMiddleware(first, _badParams_, third)).toThrowError(errorSecond);
         });
 
-        it('should throw an error when thrid parameter is not a string', () => {
+        it('throws an error when thrid parameter is not a string', () => {
             expect(() => createMiddleware(first, second, _badParams_)).toThrowError(errorThird);
         });
     });

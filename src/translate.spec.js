@@ -33,21 +33,21 @@ describe('translate enhancer', () => {
         </Provider>
     ).toJSON();
 
-    it('should provide a valid p object.', () => {
+    it('provides a valid p object.', () => {
         expect(tree.props['data-t']).toBe('hello');
         expect(tree.props['data-tc']).toBe('Hello');
         expect(tree.props['data-tu']).toBe('HELLO');
     });
 
     describe('displayName', () => {
-        it('should have a valid displayName', () => {
+        it('has a valid displayName', () => {
             const translatedName = `Translated(${name})`;
             expect(EnhancedComponent.displayName).toBe(translatedName);
             expect(translate(DummyComponentWithDisplayName).displayName)
                 .toBe(translatedName);
         });
 
-        it('shoudld have a default name when it is an anonymous component', () => {
+        it('has a default name when it is an anonymous component', () => {
             const translatedDefaultName = 'Translated(Component)';
             const TranslatedComponent = translate(createAnonymousComponent());
             expect(TranslatedComponent.displayName).toBe(translatedDefaultName);
