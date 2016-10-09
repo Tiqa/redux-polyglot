@@ -1,8 +1,8 @@
 {
   "name": "redux-polyglot",
   "version": "0.7.0",
-  "description": "",
-  "main": "./src/index.js",
+  "description": "Tool for using Polyglot.js with Redux",
+  "main": "./dist/redux-polyglot.js",
   "scripts": {
     "build": "webpack",
     "clean": "rimraf ./dist",
@@ -14,8 +14,26 @@
     "postpublish": "--- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tiqa/redux-polyglot.git"
+  },
+  "keywords": [
+    "polyglot",
+    "redux",
+    "react",
+    "i18n",
+    "reselect",
+    "component enhancer",
+    "translation"
+  ],
+
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tiqa/redux-polyglot/issues"
+  },
+  "homepage": "https://github.com/Tiqa/redux-polyglot",
   "jest": {
     "moduleFileExtensions": [
       "js",
