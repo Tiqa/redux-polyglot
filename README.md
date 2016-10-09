@@ -62,10 +62,10 @@ const polyglotMiddleware = createPolyglotMiddleware(
     'ACTION_TO_CATCH',
     action => action.payload.locale,
     locale => new Promise(resolve => {
-        // use locale for fetch phrases.
+        // perform async here
         resolve({
-            hello: 'hello'
-        });
+            hello: 'bonjour',
+        });        
     }),
 )
 
