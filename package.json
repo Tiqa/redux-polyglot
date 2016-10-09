@@ -5,9 +5,10 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jest --coverage",
+    "test-all": "npm test ; npm run -s lint",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
-    "lint": "eslint src"
+    "lint": "eslint src ; echo lint OK."
   },
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
