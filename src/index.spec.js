@@ -1,4 +1,5 @@
 import * as all from './';
+import { translate } from './translate';
 
 describe('index', () => {
     it('exports middleware', () => {
@@ -18,6 +19,6 @@ describe('index', () => {
         expect(all.getLocale).toBeDefined();
     });
     it('exports translate enhancer', () => {
-        expect(all.translate).toBeDefined();
+        expect(translate).toBeDefined();
     });
 });
