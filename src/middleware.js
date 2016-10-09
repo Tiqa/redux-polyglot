@@ -22,15 +22,12 @@ const checkParams = (catchedAction, getLocale, getPhrases) => {
 export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) => {
     checkParams(catchedAction, getLocale, getPhrases);
     const actions = isArray(catchedAction) ? catchedAction : [catchedAction];
-    return ({ dispatch, getState }) => next => action => {
+    return ({ dispatch }) => next => action => {
         if (actions.includes(action.type)) {
             const locale = getLocale(action);
-            const previousLocale = getState().polyglot.locale;
-            if (previousLocale !== locale) {
-                getPhrases(locale).then(phrases => {
-                    dispatch(setLanguage(locale, phrases));
-                });
-            }
+            getPhrases(locale).then(phrases => {
+                dispatch(setLanguage(locale, phrases));
+            });
         }
         return next(action);
     };
