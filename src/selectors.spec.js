@@ -1,5 +1,7 @@
-import { toUpper } from 'ramda';
+import { toUpper, curry, evolve, is, pipe, values, all, equals } from 'ramda';
 import { getP, getLocale } from './selectors';
+
+const on = curry((x, f) => f(x));
 
 const fakeState = {
     polyglot: {
@@ -21,6 +23,25 @@ describe('selectors', () => {
 
     describe('getP', () => {
         const p = getP(fakeState);
+
+        it('gives a valid redux-polyglot object', () => {
+            expect(
+                on(p)(pipe(
+                    evolve({
+                        phrases: is(Object),
+                        currentLocale: is(String),
+                        allowMissing: is(Boolean),
+                        warn: is(Function),
+                        t: is(Function),
+                        tc: is(Function),
+                        tu: is(Function),
+                        tm: is(Function),
+                    }),
+                    values,
+                    all(equals(true)),
+                ))
+            ).toBe(true);
+        });
 
         it('doesn\'t crash when state is an empty object', () => {
             expect(getP({})).toBe(undefined);
