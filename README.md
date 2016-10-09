@@ -20,7 +20,6 @@ const store = createStore(rootReducer, {});
 
 ```
 
-
 ### Set the language
 ##### without middleware
 You can use redux-polyglot without his middleware, for this you need the `setLanguage()` action creator :
@@ -66,6 +65,15 @@ const polyglotMiddleware = createPolyglotMiddleware(
 )
 
 const store = createStore(rootReducer, {}, applyMiddleware(polyglotMiddleware));
+```
+
+you can catch more than one action passing an array of action types: 
+```javascript
+const polyglotMiddleware = createPolyglotMiddleware(
+    ['FIRST_ACTION_TO_CATCH', 'SECOND_ACTION_TO_CATCH'],
+    getLocale,
+    getPhrases,
+)
 ```
 
 note: if new locale setted is same as previous, nothing happens.
