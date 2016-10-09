@@ -1,6 +1,6 @@
 {
   "name": "redux-polyglot",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Tool for using Polyglot.js with Redux",
   "main": "./dist/redux-polyglot.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
     "prepublish": "node scripts/prepublish.js",
-    "postpublish": "--- PUBLISHED ---",
+    "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
   },
   "repository": {
@@ -27,7 +27,6 @@
     "component enhancer",
     "translation"
   ],
-
   "author": "@garm, @jalilarfaoui, @jvincent42",
   "license": "MIT",
   "bugs": {
