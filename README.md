@@ -95,6 +95,19 @@ It returns an object with 4 functions inside :
 
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
+there is an optional parameter to getP(), he's name is polyglotScope.
+this is allow you to automatically 'aim' a scope in your phrases object.
+
+for example :
+
+```js
+store.dispatch(setLanguage('en', {
+    some: { nested: { data: { hello: 'hello' } } }
+}));
+const p = getP(store.getState(), 'some.nested.data');
+console.log(p.tc('hello')) // => will return 'Hello'
+```
+
 #### Getting current locale
 `getLocale(state)` selector returns current language.
 
@@ -119,8 +132,16 @@ import translate from 'redux-polyglot/translate';
 const DummyComponentWithPProps = translate(DummyComponent);
 ```
 
+you can select a `polyglotScope` with `translate('scope', Component)`
+```js
+// all this lines return an enhanced Dummy component
+translate(Dummy);
+translate('catalog', Dummy); // with polyglotScope
+translate('catalog')(Dummy); // curried with polyglotScope.
+```
+
 ##### get locale in a component
-You can also use the `getLocale()` selector inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
+You can use the `getLocale()` selector inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
 
 Proptype: ````locale: PropTypes.string,````
 
