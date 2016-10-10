@@ -2,9 +2,6 @@ import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
 
-// eslint-disable-next-line valid-typeof
-const is = type => x => typeof x === type;
-const isString = is('string');
 const path = arrPath => obj => arrPath.reduce((cursor, key) => cursor && cursor[key], obj);
 const toUpper = str => str.toUpperCase();
 const adjustString = (f, index) => str => (
@@ -14,8 +11,8 @@ const capitalize = adjustString(toUpper, 0);
 
 const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
-const getPolyglotScope = (state, options) => (
-    options.polyglotScope === '' ? '' : `${options.polyglotScope}.`
+const getPolyglotScope = (state, polyglotScope = '') => (
+    polyglotScope === '' ? '' : `${polyglotScope}.`
 );
 
 const getPolyglot = createSelector(
@@ -30,24 +27,22 @@ const getPolyglot = createSelector(
 const getTranslation = createSelector(
     getPolyglot,
     getPolyglotScope,
-    (p, scope = '') => (text, ...args) => p.t(scope + text, ...args)
+    (p, scope) => (text, ...args) => p.t(scope + text, ...args)
 );
 
 const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...args));
 const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
 
-const getP = (state, options = {}) => {
+const getP = (state, polyglotScope) => {
     if (!getLocale(state) || !getPhrases(state))
         return undefined;
-    const polyglotScope = isString(options) ? options : options.polyglotScope;
-    const ownProps = { polyglotScope: polyglotScope || '' };
     return {
-        ...getPolyglot(state, ownProps),
-        t: getTranslation(state, ownProps),
-        tc: getTranslationCapitalized(state, ownProps),
-        tu: getTranslationUpperCased(state, ownProps),
-        tm: getTranslationMorphed(state, ownProps),
+        ...getPolyglot(state, polyglotScope),
+        t: getTranslation(state, polyglotScope),
+        tc: getTranslationCapitalized(state, polyglotScope),
+        tu: getTranslationUpperCased(state, polyglotScope),
+        tm: getTranslationMorphed(state, polyglotScope),
     };
 };
 
