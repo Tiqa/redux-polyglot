@@ -19,7 +19,7 @@ const isValidPolyglot = pipe(
 const fakeState = {
     polyglot: {
         locale: 'fr',
-        phrases: { hello: 'bonjour' },
+        phrases: { test: { hello: 'bonjour' } },
     },
 };
 
@@ -35,7 +35,7 @@ describe('selectors', () => {
     });
 
     describe('getP', () => {
-        const p = getP(fakeState);
+        const p = getP(fakeState, 'test');
 
         it('gives a valid redux-polyglot object', () => {
             expect(isValidPolyglot(p)).toBe(true);
@@ -59,6 +59,11 @@ describe('selectors', () => {
 
         it('translates "hello" to "BONJOUR" (morphed with upper-case function)', () => {
             expect(p.tm(toUpper)('hello')).toBe('BONJOUR');
+        });
+
+        it('translates when scope is not given', () => {
+            expect(getP(fakeState).t('test.hello')).toBe('bonjour');
+            expect(getP(fakeState).tu('test.hello')).toBe('BONJOUR');
         });
     });
 });
