@@ -1,12 +1,5 @@
 import { setLanguage } from './actions';
-
-// eslint-disable-next-line valid-typeof
-const is = type => x => typeof x === type;
-
-const isString = is('string');
-const isFunction = is('function');
-const isObject = is('object');
-const isArray = Array.isArray;
+import { isString, isFunction, isObject, isArray } from './private/utils';
 
 const checkParams = (catchedAction, getLocale, getPhrases) => {
     if (!catchedAction || !getLocale || !getPhrases)

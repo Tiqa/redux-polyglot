@@ -1,11 +1,7 @@
 import curry from 'lodash.curry';
 import { connect } from 'react-redux';
 import { getP } from './selectors';
-
-// eslint-disable-next-line valid-typeof
-const is = type => x => typeof x === type;
-const isString = is('string');
-const isFunction = is('function');
+import { isFunction, isString } from './private/utils';
 
 const getDisplayName = Component => (
     Component.displayName || Component.name || 'Component'
