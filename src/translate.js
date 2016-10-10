@@ -5,12 +5,11 @@ const getDisplayName = WrappedComponent => (
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 );
 
-const mapStateToProps = state => ({ p: getP(state) });
-const translate = Component => {
-    const Connected = connect(mapStateToProps)(Component);
+const mapPolyglotToProps = options => state => ({ p: getP(state, options) });
+const translate = (Component, options) => {
+    const Connected = connect(mapPolyglotToProps(options))(Component);
     Connected.displayName = `Translated(${getDisplayName(Connected.WrappedComponent)})`;
     return Connected;
 };
 
 export default translate;
-
