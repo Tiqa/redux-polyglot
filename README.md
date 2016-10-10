@@ -28,7 +28,7 @@ const store = createStore(rootReducer, {});
 #### without middleware
 You can use redux-polyglot without his middleware, for this you need the `setLanguage()` action creator :
 
-- ```setLanguage :: String -> Object -> Action```
+- ```setLanguage :: (String, Object) -> Action```
 
 Example:
 ```javascript
