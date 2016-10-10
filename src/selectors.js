@@ -21,21 +21,16 @@ const getPolyglotScope = (state, options) => (
 const getPolyglot = createSelector(
     getLocale,
     getPhrases,
-    getPolyglotScope,
-    (locale, phrases, polyglotScope = '') => {
-        const p = new Polyglot({
-            locale,
-            phrases,
-        });
-        const t = p.t.bind(p);
-        p.t = (text, ...args) => t(polyglotScope + text, ...args);
-        return p;
-    }
+    (locale, phrases) => new Polyglot({
+        locale,
+        phrases,
+    })
 );
 
 const getTranslation = createSelector(
     getPolyglot,
-    (p) => p.t.bind(p)
+    getPolyglotScope,
+    (p, scope = '') => (text, ...args) => p.t(scope + text, ...args)
 );
 
 const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...args));
