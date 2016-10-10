@@ -27,7 +27,19 @@
     "component enhancer",
     "translation"
   ],
-  "author": "@garm, @jalilarfaoui, @jvincent42",
+  "maintainers": [
+    {
+      "name": "Guillaume Arm",
+      "email": "guillaume.arm@redpelicans.com"
+    },
+    {
+      "name": "Jalil Arfaoui",
+      "email": "jalil@arfaoui.net"
+    },
+    {
+      "name": "Jérémy Vincent"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Tiqa/redux-polyglot/issues"
