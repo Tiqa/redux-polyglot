@@ -39,6 +39,13 @@ describe('translate enhancer', () => {
         expect(tree.props['data-tu']).toBe('HELLO');
     });
 
+    it('should return a valid translated component', () => {
+        const Dummy = DummyComponent;
+        expect(translate(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate('', Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate('')(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+    });
+
     describe('displayName', () => {
         it('has a valid displayName', () => {
             const translatedName = `Translated(${name})`;
