@@ -8,11 +8,7 @@ const CATCHED_ACTION = 'CATCHED_ACTION';
 const OTHER_CATCHED_ACTION = 'OTHER_CATCHED_ACTION';
 const UNCATCHED_ACTION = 'UNCATCHED_ACTION';
 
-const spy = impl => {
-    const fn = jest.fn().mockImplementation(impl);
-    fn.constructor = Function; // for being appear like a vanilla JS Function.
-    return fn;
-};
+const spy = impl => jest.fn().mockImplementation(impl);
 
 const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
 const createFakeStore = (getLocale, getPhrases) => {
