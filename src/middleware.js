@@ -1,4 +1,4 @@
-import { SET_LANGUAGE, SET_LOCALE } from './constants';
+import { SET_LANGUAGE, SET_LOCALE } from './actions';
 import { isString, isFunction, isObject, isArray } from './private/utils';
 
 /* --- Error preventing ----------------------------------------------------- */
