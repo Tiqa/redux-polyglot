@@ -1,9 +1,6 @@
-import { SET_LANGUAGE } from './constants';
+import { SET_LOCALE } from './constants';
 
-export const setLanguage = (locale, phrases) => ({
-    type: SET_LANGUAGE,
-    payload: {
-        locale,
-        phrases,
-    },
+export const setLocale = (locale) => ({
+    type: SET_LOCALE,
+    payload: locale,
 });

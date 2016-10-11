@@ -3,16 +3,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import { polyglotReducer } from './reducer';
 import { createPolyglotMiddleware } from './middleware';
+import { setLocale } from './actions';
 
 const CATCHED_ACTION = 'CATCHED_ACTION';
 const OTHER_CATCHED_ACTION = 'OTHER_CATCHED_ACTION';
 const UNCATCHED_ACTION = 'UNCATCHED_ACTION';
 
-const spy = impl => {
-    const fn = jest.fn().mockImplementation(impl);
-    fn.constructor = Function; // for being appear like a vanilla JS Function.
-    return fn;
-};
+const spy = impl => jest.fn().mockImplementation(impl);
 
 const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
 const createFakeStore = (getLocale, getPhrases) => {
@@ -86,6 +83,25 @@ describe('middleware', () => {
         });
         unsubscribe = fakeStore.subscribe(listener);
         fakeStore.dispatch({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
+    });
+
+    it('impacts the store when a SET_LOCALE action is dispatched.', (cb) => {
+        const oldState = fakeStore.getState();
+        fakePhrases = { test: 'test' };
+        let counter = 0;
+        let unsubscribe;
+        const listener = spy(() => {
+            counter += 1;
+            expect(getLocale).not.toBeCalled();
+            expect(getPhrases).toBeCalledWith('fr');
+            if (counter === 2) {
+                expect(fakeStore.getState()).not.toEqual(oldState);
+                unsubscribe();
+                cb();
+            }
+        });
+        unsubscribe = fakeStore.subscribe(listener);
+        fakeStore.dispatch(setLocale('fr'));
     });
 
     describe('Errors catching', () => {
