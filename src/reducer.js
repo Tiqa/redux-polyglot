@@ -1,4 +1,4 @@
-import { SET_LANGUAGE } from './constants';
+import { SET_LANGUAGE } from './actions';
 
 const initialState = {
     locale: null,
