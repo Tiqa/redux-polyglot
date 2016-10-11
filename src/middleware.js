@@ -31,7 +31,7 @@ const setLanguage = (locale, phrases) => ({
     },
 });
 
-const asynscSetLanguage = (getPhrases, locale, dispatch) => {
+const performGetPhrases = (getPhrases, locale, dispatch) => {
     getPhrases(locale).then(phrases => {
         dispatch(setLanguage(locale, phrases));
     });
@@ -43,10 +43,11 @@ export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) =
     return ({ dispatch, getState }) => {
         checkState(getState());
         return next => action => {
-            if (catchedActions.includes(action.type))
-                asynscSetLanguage(getPhrases, getLocale(action), dispatch);
-            else if (action.type === SET_LOCALE)
-                asynscSetLanguage(getPhrases, action.payload, dispatch);
+            const isSetLocalAction = action.type === SET_LOCALE;
+            if (catchedActions.includes(action.type) || isSetLocalAction) {
+                const locale = isSetLocalAction ? action.payload : getLocale(action);
+                performGetPhrases(getPhrases, locale, dispatch);
+            }
             return next(action);
         };
     };
