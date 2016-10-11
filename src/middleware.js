@@ -10,10 +10,16 @@ const checkParams = (catchedAction, getLocale, getPhrases) => {
             'polyglotMiddleware : first parameter must be a string or an array of string.'
         ));
     }
-    if (!isFunction(getLocale))
-        throw (new Error('polyglotMiddleware : second parameter must be a function.'));
-    if (!isFunction(getPhrases))
-        throw (new Error('polyglotMiddleware : third parameter must be a function.'));
+    if (!isFunction(getLocale)) {
+        throw (new Error(
+            'polyglotMiddleware : second parameter must be a function.'
+        ));
+    }
+    if (!isFunction(getPhrases)) {
+        throw (new Error(
+            'polyglotMiddleware : third parameter must be a function.'
+        ));
+    }
 };
 
 const getIsValidPolyglotReducer = state => !!(state && isObject(state.polyglot));
@@ -31,9 +37,16 @@ const setLanguage = (locale, phrases) => ({
     },
 });
 
-const asynscSetLanguage = (getPhrases, locale, dispatch) => {
-    getPhrases(locale).then(phrases => {
-        dispatch(setLanguage(locale, phrases));
+const identityPromise = x => new Promise(res => res(x));
+
+const performGetPhrases = (getPhrases, locale, dispatch) => {
+    const localePromise = isString(locale) ? identityPromise(locale) : locale;
+    localePromise.then(lc => {
+        const phrases = getPhrases(lc);
+        const phrasesPromise = isObject(phrases) ? identityPromise(phrases) : phrases;
+        phrasesPromise.then(p => {
+            dispatch(setLanguage(lc, p));
+        });
     });
 };
 
@@ -43,10 +56,11 @@ export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) =
     return ({ dispatch, getState }) => {
         checkState(getState());
         return next => action => {
-            if (catchedActions.includes(action.type))
-                asynscSetLanguage(getPhrases, getLocale(action), dispatch);
-            else if (action.type === SET_LOCALE)
-                asynscSetLanguage(getPhrases, action.payload, dispatch);
+            const isSetLocalAction = action.type === SET_LOCALE;
+            if (catchedActions.includes(action.type) || isSetLocalAction) {
+                const locale = isSetLocalAction ? action.payload : getLocale(action);
+                performGetPhrases(getPhrases, locale, dispatch);
+            }
             return next(action);
         };
     };
