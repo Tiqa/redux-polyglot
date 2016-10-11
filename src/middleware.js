@@ -1,6 +1,7 @@
 import { setLanguage } from './actions';
 import { isString, isFunction, isObject, isArray } from './private/utils';
 
+/* --- Error preventing ----------------------------------------------------- */
 const checkParams = (catchedAction, getLocale, getPhrases) => {
     if (!catchedAction || !getLocale || !getPhrases)
         throw (new Error('polyglotMiddleware : missing parameters.'));
@@ -20,6 +21,7 @@ const checkState = state => {
     if (!getIsValidPolyglotReducer(state))
         throw (new Error('polyglotReducer : need to be store in "state.polyglot"'));
 };
+/* -------------------------------------------------------------------------- */
 
 export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) => {
     checkParams(catchedAction, getLocale, getPhrases);
