@@ -21,21 +21,18 @@ const createFakeStore = (getLocale, getPhrases) => {
 
 describe('middleware', () => {
     let fakePhrases = { hello: 'hello' };
-    const getLocale = spy(action => (action.payload && action.payload.locale) || 'en');
-    const getPhrases = spy(() => new Promise((resolve) => (
+    const getPhrases = () => fakePhrases;
+    const getLocale = action => (action.payload && action.payload.locale) || 'en';
+    const getAsyncLocale = (action => new Promise(resolve =>
+        resolve(getLocale(action))
+    ));
+    const getAsyncPhrases = (() => new Promise((resolve) => (
         setTimeout(resolve, 1, fakePhrases)
     )));
-    const fakeStore = createFakeStore(getLocale, getPhrases);
-
-    beforeEach(() => {
-        getLocale.mockClear();
-        getPhrases.mockClear();
-    });
 
     it('doesn\'t impact the store when action is unknown.', () => {
+        const fakeStore = createFakeStore(getLocale, getPhrases);
         const listener = spy(() => {
-            expect(getLocale).not.toBeCalled();
-            expect(getPhrases).not.toBeCalled();
             expect(fakeStore.getState()).toEqual({
                 polyglot: { locale: null, phrases: null },
             });
@@ -47,13 +44,12 @@ describe('middleware', () => {
     });
 
     it('impacts the store when action is CATCHED_ACTION.', (cb) => {
+        const fakeStore = createFakeStore(getLocale, getPhrases);
         let counter = 0;
         let unsubscribe;
         const listener = spy(() => {
             counter += 1;
             if (counter === 2) {
-                expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
-                expect(getPhrases).toBeCalledWith('en');
                 expect(fakeStore.getState()).toEqual({
                     polyglot: { locale: 'en', phrases: { hello: 'hello' } },
                 });
@@ -67,14 +63,13 @@ describe('middleware', () => {
     });
 
     it('impacts the store when locale is same as previous one.', (cb) => {
+        const fakeStore = createFakeStore(getLocale, getPhrases);
         const oldState = fakeStore.getState();
         fakePhrases = {};
         let counter = 0;
         let unsubscribe;
         const listener = spy(() => {
             counter += 1;
-            expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
-            expect(getPhrases).toBeCalledWith('fr');
             if (counter === 2) {
                 expect(fakeStore.getState()).not.toEqual(oldState);
                 unsubscribe();
@@ -86,14 +81,67 @@ describe('middleware', () => {
     });
 
     it('impacts the store when a SET_LOCALE action is dispatched.', (cb) => {
+        const fakeStore = createFakeStore(getLocale, getPhrases);
         const oldState = fakeStore.getState();
         fakePhrases = { test: 'test' };
         let counter = 0;
         let unsubscribe;
         const listener = spy(() => {
             counter += 1;
-            expect(getLocale).not.toBeCalled();
-            expect(getPhrases).toBeCalledWith('fr');
+            if (counter === 2) {
+                expect(fakeStore.getState()).not.toEqual(oldState);
+                unsubscribe();
+                cb();
+            }
+        });
+        unsubscribe = fakeStore.subscribe(listener);
+        fakeStore.dispatch(setLocale('fr'));
+    });
+
+    it('impacts the store with an asynchronous getLocale()', (cb) => {
+        const fakeStore = createFakeStore(getAsyncLocale, getPhrases);
+        const oldState = fakeStore.getState();
+        fakePhrases = { test: 'test' };
+        let counter = 0;
+        let unsubscribe;
+        const listener = spy(() => {
+            counter += 1;
+            if (counter === 2) {
+                expect(fakeStore.getState()).not.toEqual(oldState);
+                unsubscribe();
+                cb();
+            }
+        });
+        unsubscribe = fakeStore.subscribe(listener);
+        fakeStore.dispatch(setLocale('fr'));
+    });
+
+    it('impacts the store with an asynchronous getPhrases()', (cb) => {
+        const fakeStore = createFakeStore(getLocale, getAsyncPhrases);
+        const oldState = fakeStore.getState();
+        fakePhrases = { test: 'test' };
+        let counter = 0;
+        let unsubscribe;
+        const listener = spy(() => {
+            counter += 1;
+            if (counter === 2) {
+                expect(fakeStore.getState()).not.toEqual(oldState);
+                unsubscribe();
+                cb();
+            }
+        });
+        unsubscribe = fakeStore.subscribe(listener);
+        fakeStore.dispatch(setLocale('fr'));
+    });
+
+    it('impacts the store with an asynchronous getLocale()/getPhrases', (cb) => {
+        const fakeStore = createFakeStore(getAsyncLocale, getAsyncPhrases);
+        const oldState = fakeStore.getState();
+        fakePhrases = { test: 'test' };
+        let counter = 0;
+        let unsubscribe;
+        const listener = spy(() => {
+            counter += 1;
             if (counter === 2) {
                 expect(fakeStore.getState()).not.toEqual(oldState);
                 unsubscribe();
@@ -128,27 +176,24 @@ describe('middleware', () => {
             expect(() => createPolyglotMiddleware(first, second)).toThrowError(errorMissing);
         });
 
+        it('doesn\'t throw an error when first parameter is a string or an array', () => {
+            expect(() => createMiddleware(first, second, third)).not.toThrow();
+            expect(() => createMiddleware([], second, third)).not.toThrow();
+        });
+
         it('throws an error when first parameter is not a string or an array', () => {
             expect(() => createMiddleware(_badParams_, second, third)).toThrowError(errorFirst);
         });
 
-        it('doesn\'t throw an error when first parameter is a string', () => {
-            expect(() => createMiddleware(first, second, third)).not.toThrow();
-        });
-
-        it('doesn\'t throw an error when first parameter is an array', () => {
-            expect(() => createMiddleware([], second, third)).not.toThrow();
-        });
-
-        it('throws an error when second parameter is not a string', () => {
+        it('throws an error when second parameter is not a function', () => {
             expect(() => createMiddleware(first, _badParams_, third)).toThrowError(errorSecond);
         });
 
-        it('throws an error when thrid parameter is not a string', () => {
+        it('throws an error when third parameter is not a function', () => {
             expect(() => createMiddleware(first, second, _badParams_)).toThrowError(errorThird);
         });
 
-        describe('reducer', () => {
+        describe('correct reducer', () => {
             const polyglotMiddleware = createPolyglotMiddleware([], getLocale, getPhrases);
             const rootReducer = combineReducers({ test: (state = 42) => state });
             it('throws an error when polyglot is not in "state.polyglot"', () => {

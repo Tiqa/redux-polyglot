@@ -10,10 +10,16 @@ const checkParams = (catchedAction, getLocale, getPhrases) => {
             'polyglotMiddleware : first parameter must be a string or an array of string.'
         ));
     }
-    if (!isFunction(getLocale))
-        throw (new Error('polyglotMiddleware : second parameter must be a function.'));
-    if (!isFunction(getPhrases))
-        throw (new Error('polyglotMiddleware : third parameter must be a function.'));
+    if (!isFunction(getLocale)) {
+        throw (new Error(
+            'polyglotMiddleware : second parameter must be a function.'
+        ));
+    }
+    if (!isFunction(getPhrases)) {
+        throw (new Error(
+            'polyglotMiddleware : third parameter must be a function.'
+        ));
+    }
 };
 
 const getIsValidPolyglotReducer = state => !!(state && isObject(state.polyglot));
@@ -31,9 +37,16 @@ const setLanguage = (locale, phrases) => ({
     },
 });
 
+const identityPromise = x => new Promise(res => res(x));
+
 const performGetPhrases = (getPhrases, locale, dispatch) => {
-    getPhrases(locale).then(phrases => {
-        dispatch(setLanguage(locale, phrases));
+    const localePromise = isString(locale) ? identityPromise(locale) : locale;
+    localePromise.then(lc => {
+        const phrases = getPhrases(lc);
+        const phrasesPromise = isObject(phrases) ? identityPromise(phrases) : phrases;
+        phrasesPromise.then(p => {
+            dispatch(setLanguage(lc, p));
+        });
     });
 };
 
