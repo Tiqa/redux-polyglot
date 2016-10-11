@@ -1,31 +1,20 @@
-// import { setLanguage } from './actions';
-// import { SET_LANGUAGE } from './constants';
+import { setLocale } from './actions';
+import { SET_LOCALE } from './constants';
 
 describe('actions', () => {
-    it("s cool", () => {
-        
+    describe('setLocale', () => {
+        it('returns a SET_LOCALE action without locale if not given', () => {
+            const actionWithoutLocale = setLocale();
+            expect(actionWithoutLocale).toEqual({
+                type: SET_LOCALE,
+            });
+        });
+        it('returns a SET_LOCALE with locale in payload', () => {
+            const actionWithoutLocaleAndPhrases = setLocale('yolo', 42);
+            expect(actionWithoutLocaleAndPhrases).toEqual({
+                type: SET_LOCALE,
+                payload: 'yolo',
+            });
+        });
     });
-    // describe('setLanguage', () => {
-    //     it('returns a SET_LANGUAGE without locale/phrases if not given', () => {
-    //         const actionWithoutLocaleAndPhrases = setLanguage();
-    //
-    //         expect(actionWithoutLocaleAndPhrases).toBeDefined();
-    //         expect(actionWithoutLocaleAndPhrases).toEqual({
-    //             type: SET_LANGUAGE,
-    //             payload: {},
-    //         });
-    //     });
-    //     it('returns a SET_LANGUAGE with locale/phrases', () => {
-    //         const actionWithoutLocaleAndPhrases = setLanguage('yolo', 42);
-    //
-    //         expect(actionWithoutLocaleAndPhrases).toBeDefined();
-    //         expect(actionWithoutLocaleAndPhrases).toEqual({
-    //             type: SET_LANGUAGE,
-    //             payload: {
-    //                 locale: 'yolo',
-    //                 phrases: 42,
-    //             },
-    //         });
-    //     });
-    // });
 });
