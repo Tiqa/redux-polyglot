@@ -1,4 +1,4 @@
-import { SET_LANGUAGE } from './constants';
+import { SET_LANGUAGE, SET_LOCALE } from './constants';
 import { isString, isFunction, isObject, isArray } from './private/utils';
 
 /* --- Error preventing ----------------------------------------------------- */
@@ -31,18 +31,22 @@ const setLanguage = (locale, phrases) => ({
     },
 });
 
+const asynscSetLanguage = (getPhrases, locale, dispatch) => {
+    getPhrases(locale).then(phrases => {
+        dispatch(setLanguage(locale, phrases));
+    });
+};
+
 export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) => {
     checkParams(catchedAction, getLocale, getPhrases);
     const catchedActions = isArray(catchedAction) ? catchedAction : [catchedAction];
     return ({ dispatch, getState }) => {
         checkState(getState());
         return next => action => {
-            if (catchedActions.includes(action.type)) {
-                const locale = getLocale(action);
-                getPhrases(locale).then(phrases => {
-                    dispatch(setLanguage(locale, phrases));
-                });
-            }
+            if (catchedActions.includes(action.type))
+                asynscSetLanguage(getPhrases, getLocale(action), dispatch);
+            else if (action.type === SET_LOCALE)
+                asynscSetLanguage(getPhrases, action.payload, dispatch);
             return next(action);
         };
     };
