@@ -44,24 +44,10 @@
     "should": false,
     "chai": false,
     "sinon": false,
-    "Power2": false,
-    "Sine": false,
     "__DEVELOPMENT__": false
   },
   "rules": {
     "max-len": ["error", 100, { "ignoreComments": true }],
-    "new-cap": ["warn", {"capIsNewExceptions": [
-        "ATMiddleware",
-        "ATGlobalMiddleware",
-        "Immutable",
-        "Map",
-        "List",
-        "Set",
-        "OrderedSet",
-        "Range",
-        "Moment",
-        "Linker"
-    ]}],
     "comma-dangle": ["warn", "always-multiline"], // disallow or enforce trailing commas
     "curly": ["warn", "multi-or-nest"], // specify curly brace conventions for all control statements
     "indent": ["warn", 4, {"SwitchCase": 1}], // this option sets a specific tab width for your code (off by default)
