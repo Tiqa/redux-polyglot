@@ -37,13 +37,14 @@ const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(ca
 const identity = (key) => (key);
 
 const getP = (state, polyglotScope) => {
-    if (!getLocale(state) || !getPhrases(state))
+    if (!getLocale(state) || !getPhrases(state)) {
         return {
             t: identity,
             tc: identity,
             tu: identity,
             tm: identity,
         };
+    }
     return {
         ...getPolyglot(state, polyglotScope),
         t: getTranslation(state, polyglotScope),
