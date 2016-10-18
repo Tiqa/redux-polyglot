@@ -41,8 +41,12 @@ describe('selectors', () => {
             expect(isValidPolyglot(p)).toBe(true);
         });
 
-        it('doesn\'t crash when state is an empty object', () => {
-            expect(getP({})).toBe(undefined);
+        it('returns phrase key if no locale defined', () => {
+            expect(getP({})).toBeDefined();
+
+            const emptyP = getP({});
+
+            expect(emptyP.t('a.path.to.translate')).toEqual('a.path.to.translate');
         });
 
         it('translates "hello" to "bonjour"', () => {
