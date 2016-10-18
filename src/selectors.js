@@ -1,6 +1,7 @@
 import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
+import { identity } from './private/utils';
 
 const path = arrPath => obj => arrPath.reduce((cursor, key) => cursor && cursor[key], obj);
 const toUpper = str => str.toUpperCase();
@@ -33,8 +34,6 @@ const getTranslation = createSelector(
 const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...args));
 const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
-
-const identity = (key) => (key);
 
 const getP = (state, polyglotScope) => {
     if (!getLocale(state) || !getPhrases(state)) {
