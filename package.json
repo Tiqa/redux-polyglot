@@ -11,6 +11,7 @@
     "test-all": "npm run -s prepublish",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
+    "version": "node scripts/version.js",
     "prepublish": "node scripts/prepublish.js",
     "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
