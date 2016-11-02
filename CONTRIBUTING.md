@@ -20,3 +20,8 @@
 
 6.  Open a pull request.
 
+
+
+----------------
+
+Please read semver.org
