@@ -1,5 +1,12 @@
 # Contributing
 
+[react-redux-polyglot](https://github.com/Tiqa/react-redux-polyglot) use [redux-polyglot](https://github.com/Tiqa/redux-polyglot) as main dependency, so we work on a [dev branch](https://github.com/Tiqa/redux-polyglot/tree/dev) for staging and need to follow this __3 principles__ :
+- this branch must be as clean as master, so `npm run prepublish` must be ok.
+- all master merges should be tagged by a new version. (on the master branch only)
+- all change must be validated by [react-redux-polyglot](https://github.com/Tiqa/react-redux-polyglot) unit testing before merge on master
+
+--------------
+
 1.  Fork the project and clone your fork.
 
 2.  Create a local feature branch:
@@ -18,9 +25,7 @@
 
         $ git push origin <branch>
 
-6.  Open a pull request.
-
-
+6.  Open a pull request on [dev](https://github.com/Tiqa/redux-polyglot/tree/dev) branch.
 
 ----------------
 
