@@ -43,7 +43,7 @@ The `createPolyglotMiddleware()` function allow you to automatically update lang
 
 The middleware catches specific action(s), and find the locale in the payload, and then [asynchronously] load the `polyglot phrases` (with Promise).
 
-It takes 4 parameters and return a middleware :
+It takes 3 parameters and return a middleware :
 - 1 - `actionToCatch :: String | Array<String>`
     - the type(s) of the action to catch
 - 2 - `getLocale :: Object -> String`
