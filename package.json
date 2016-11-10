@@ -5,11 +5,13 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "babel src --out-dir dist --ignore '*.spec.js'",
-    "clean": "rimraf ./dist",
+    "clean": "git reset HEAD -- ./dist ; git checkout ./dist",
+    "clean-dist": "rimraf ./dist",
     "test": "jest --coverage",
     "test-all": "npm run -s prepublish",
     "watch-test": "jest --watch --coverage",
     "wtest": "npm run watch-test",
+    "version": "node scripts/version.js",
     "prepublish": "node scripts/prepublish.js",
     "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
