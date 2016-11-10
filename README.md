@@ -1,5 +1,7 @@
 # redux-polyglot
 
+[ ![Codeship Status for Tiqa/redux-polyglot](https://app.codeship.com/projects/21623df0-8959-0134-75f2-0e35097499a9/status?branch=master)](https://app.codeship.com/projects/184177)
+
 Toolset (actions, reducer, middleware, enhancer, selectors) to help use Polyglot with Redux.
 
 ## Installation
