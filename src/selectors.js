@@ -35,7 +35,7 @@ const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...arg
 const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
 
-const getP = (state, polyglotScope) => {
+const getP = (state, { polyglotScope } = {}) => {
     if (!getLocale(state) || !getPhrases(state)) {
         return {
             t: identity,

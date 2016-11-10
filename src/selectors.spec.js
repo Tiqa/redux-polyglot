@@ -35,7 +35,7 @@ describe('selectors', () => {
     });
 
     describe('getP', () => {
-        const p = getP(fakeState, 'test');
+        const p = getP(fakeState, { polyglotScope: 'test' });
 
         it('gives a valid redux-polyglot object', () => {
             expect(isValidPolyglot(p)).toBe(true);
