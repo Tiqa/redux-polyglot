@@ -8,7 +8,7 @@ const getDisplayName = Component => (
 );
 
 const mapPolyglotToProps = polyglotScope => state => ({
-    p: getP(state, polyglotScope),
+    p: getP(state, { polyglotScope }),
 });
 
 const translateEnhancer = curry((polyglotScope, Component) => {
