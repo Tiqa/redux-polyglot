@@ -93,8 +93,8 @@ It returns an object with 4 functions inside :
 
 (see [polyglot documentation](http://airbnb.io/polyglot.js/))
 
-there is an optional parameter to getP(), he's name is polyglotScope.
-this is allow you to automatically 'aim' a scope in your phrases object.
+there is an optional parameter to getP().
+this is allow you to automatically 'aim' a scope in your phrases object using `polyglotScope` property.
 
 for example :
 
@@ -102,7 +102,7 @@ for example :
 store.dispatch(setLanguage('en', {
     some: { nested: { data: { hello: 'hello' } } }
 }));
-const p = getP(store.getState(), 'some.nested.data');
+const p = getP(store.getState(), { polyglotScope: 'some.nested.data' });
 console.log(p.tc('hello')) // => will return 'Hello'
 ```
 
