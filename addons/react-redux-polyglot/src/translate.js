@@ -1,28 +1,20 @@
-import curry from 'lodash.curry';
 import { connect } from 'react-redux';
-import { getP } from './selectors';
-import { isFunction, isString } from './private/utils';
+import { getP } from 'redux-polyglot/src/selectors';
 
 const getDisplayName = Component => (
     Component.displayName || Component.name || 'Component'
 );
 
-const mapPolyglotToProps = polyglotScope => state => ({
-    p: getP(state, { polyglotScope }),
-});
+const translate = (mapPhrasesToProps, options) => Component => {
+    const mapStateToProps = mapPhrasesToProps
+        ? state => mapPhrasesToProps(getP(state, options))
+        : state => ({
+            p: getP(state, options),
+        });
 
-const translateEnhancer = curry((polyglotScope, Component) => {
-    const Connected = connect(mapPolyglotToProps(polyglotScope))(Component);
-    Connected.displayName = `Translated(${getDisplayName(Connected.WrappedComponent)})`;
+    const Connected = connect(mapStateToProps)(Component);
+    Connected.displayName = `Translated(${getDisplayName(Component)})`;
     return Connected;
-});
-
-const translate = (fstArg, sndArg) => {
-    if (isFunction(fstArg))
-        return translateEnhancer('', fstArg);
-    else if (isString(fstArg) && sndArg === undefined)
-        return translateEnhancer(fstArg);
-    return translateEnhancer(fstArg, sndArg);
 };
 
 export default translate;

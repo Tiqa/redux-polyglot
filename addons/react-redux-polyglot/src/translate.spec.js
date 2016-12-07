@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import renderer from 'react-test-renderer';
 
-import { polyglotReducer } from './reducer';
+import { polyglotReducer } from 'redux-polyglot/src/reducer';
 import translate from './translate';
 
 const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
