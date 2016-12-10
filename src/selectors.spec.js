@@ -1,11 +1,11 @@
-import { toUpper, evolve, is, pipe, values, all, equals } from 'ramda';
+import { toUpper, evolve, is, pipe, values, all, equals, either, isNil } from 'ramda';
 import { getP, getLocale } from './selectors';
 
 const isValidPolyglot = pipe(
     evolve({
         phrases: is(Object),
         currentLocale: is(String),
-        allowMissing: is(Boolean),
+        onMissingKey: either(isNil, is(Boolean)),
         warn: is(Function),
         t: is(Function),
         tc: is(Function),
