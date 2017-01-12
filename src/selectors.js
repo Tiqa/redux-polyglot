@@ -12,16 +12,20 @@ const capitalize = adjustString(toUpper, 0);
 
 const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
-const getPolyglotScope = (state, polyglotScope = '') => (
+const getPolyglotScope = (state, { polyglotScope = '' }) => (
     polyglotScope === '' ? '' : `${polyglotScope}.`
 );
+
+const getPolyglotOptions = (state, { polyglotOptions = {} }) => polyglotOptions;
 
 const getPolyglot = createSelector(
     getLocale,
     getPhrases,
-    (locale, phrases) => new Polyglot({
+    getPolyglotOptions,
+    (locale, phrases, polyglotOptions) => new Polyglot({
         locale,
         phrases,
+        ...polyglotOptions,
     })
 );
 
@@ -35,7 +39,7 @@ const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...arg
 const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
 
-const getP = (state, { polyglotScope } = {}) => {
+const createGetP = (polyglotOptions) => (state, { polyglotScope } = {}) => {
     if (!getLocale(state) || !getPhrases(state)) {
         return {
             t: identity,
@@ -44,13 +48,16 @@ const getP = (state, { polyglotScope } = {}) => {
             tm: identity,
         };
     }
+    const options = { polyglotScope, polyglotOptions };
     return {
-        ...getPolyglot(state, polyglotScope),
-        t: getTranslation(state, polyglotScope),
-        tc: getTranslationCapitalized(state, polyglotScope),
-        tu: getTranslationUpperCased(state, polyglotScope),
-        tm: getTranslationMorphed(state, polyglotScope),
+        ...getPolyglot(state, options),
+        t: getTranslation(state, options),
+        tc: getTranslationCapitalized(state, options),
+        tu: getTranslationUpperCased(state, options),
+        tm: getTranslationMorphed(state, options),
     };
 };
 
-export { getP, getLocale };
+const getP = createGetP();
+
+export { getP, getLocale, createGetP };
