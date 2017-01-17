@@ -145,6 +145,20 @@ You can use the `getLocale()` selector inside a [mapStateToProps](https://github
 
 Proptype: ````locale: PropTypes.string,````
 
+### Use polyglot options
+if you want to use `onMissingKey`, `allowMissing` or `warn` [polyglot](http://airbnb.io/polyglot.js/) options, you can use the `createGetP` function to create a custom `getP`.
+
+usage :
+```js
+import { createGetP } from 'redux-polyglot';
+
+const options = {
+  allowMissing: true,
+}
+
+export const getP = createGetP(options);
+```
+
 ## Team
 
 These folks keep the project moving and are resources for help:
