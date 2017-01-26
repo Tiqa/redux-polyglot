@@ -65,7 +65,7 @@ const polyglotMiddleware = createPolyglotMiddleware(
         // perform async here
         resolve({
             hello: 'bonjour',
-        });        
+        });
     }),
 )
 
@@ -90,6 +90,7 @@ You can use the `getP(state)` selector.
 It returns an object with 4 functions inside :
 - t: String -> String : translation (the original polyglot `t` function)
 - tc: String -> String : translation capitalized
+- tt: String -> String : translation titleized
 - tu: String -> String : translation upper-cased
 - tm: (String -> String) -> String -> String :  translation using a custom morphism
 
