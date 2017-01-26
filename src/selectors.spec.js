@@ -9,6 +9,7 @@ const isValidPolyglot = pipe(
         warn: is(Function),
         t: is(Function),
         tc: is(Function),
+        tt: is(Function),
         tu: is(Function),
         tm: is(Function),
     }),
@@ -19,7 +20,7 @@ const isValidPolyglot = pipe(
 const fakeState = {
     polyglot: {
         locale: 'fr',
-        phrases: { test: { hello: 'bonjour' } },
+        phrases: { test: { hello: 'bonjour', hello_world: 'bonjour monde' } },
     },
 };
 
@@ -55,6 +56,10 @@ describe('selectors', () => {
 
         it('translates "hello" to "Bonjour" (capitalize)', () => {
             expect(p.tc('hello')).toBe('Bonjour');
+        });
+
+        it('translates "hello world" to "Bonjour Monde" (titleize)', () => {
+            expect(p.tt('hello_world')).toBe('Bonjour Monde');
         });
 
         it('translates "hello" to "BONJOUR" (upper-case)', () => {

@@ -5,6 +5,7 @@ import { identity } from './private/utils';
 
 const path = arrPath => obj => arrPath.reduce((cursor, key) => cursor && cursor[key], obj);
 const toUpper = str => str.toUpperCase();
+const titleize = str => str.toLowerCase().replace(/(?:^|\s|-)\S/g, c => c.toUpperCase());
 const adjustString = (f, index) => str => (
     str.substr(0, index) + f(str[index]) + str.substr(index + 1)
 );
@@ -38,12 +39,14 @@ const getTranslation = createSelector(
 const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...args));
 const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
+const getTranslationTitleized = (...args) => getTranslationMorphed(...args)(titleize);
 
 const createGetP = (polyglotOptions) => (state, { polyglotScope } = {}) => {
     if (!getLocale(state) || !getPhrases(state)) {
         return {
             t: identity,
             tc: identity,
+            tt: identity,
             tu: identity,
             tm: identity,
         };
@@ -53,6 +56,7 @@ const createGetP = (polyglotOptions) => (state, { polyglotScope } = {}) => {
         ...getPolyglot(state, options),
         t: getTranslation(state, options),
         tc: getTranslationCapitalized(state, options),
+        tt: getTranslationTitleized(state, options),
         tu: getTranslationUpperCased(state, options),
         tm: getTranslationMorphed(state, options),
     };
