@@ -1,3 +1,4 @@
+import memoize from 'lodash.memoize';
 import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
@@ -40,6 +41,7 @@ const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toU
 const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
 
 const createGetP = (polyglotOptions) => {
+    const options = { polyglotOptions };
     const getP = createSelector(
         getLocale,
         getPhrases,
@@ -66,7 +68,8 @@ const createGetP = (polyglotOptions) => {
             };
         },
     );
-    return (state, options) => getP(state, { ...options, polyglotOptions });
+    const mergeObject = memoize((a, b) => Object.assign({}, a, b));
+    return (state, props) => getP(state, mergeObject(props, options));
 };
 
 const getP = createGetP();
