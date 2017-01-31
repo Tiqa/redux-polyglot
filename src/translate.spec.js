@@ -41,6 +41,7 @@ describe('translate enhancer', () => {
 
     it('should return a valid translated component', () => {
         const Dummy = DummyComponent;
+        expect(translate()(Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate(Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('', Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('')(Dummy).displayName).toEqual(EnhancedComponent.displayName);
