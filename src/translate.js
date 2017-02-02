@@ -18,7 +18,9 @@ const translateEnhancer = curry((polyglotScope, Component) => {
 });
 
 const translate = (fstArg, sndArg) => {
-    if (isFunction(fstArg))
+    if (fstArg === undefined && sndArg === undefined)
+        return translateEnhancer('');
+    else if (isFunction(fstArg))
         return translateEnhancer('', fstArg);
     else if (isString(fstArg) && sndArg === undefined)
         return translateEnhancer(fstArg);
