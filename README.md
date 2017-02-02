@@ -138,6 +138,7 @@ you can select a `polyglotScope` with `translate('scope', Component)`
 // all this lines return an enhanced Dummy component
 translate(Dummy);
 translate('catalog', Dummy); // with polyglotScope
+translate()(Dummy); // curried
 translate('catalog')(Dummy); // curried with polyglotScope.
 ```
 
