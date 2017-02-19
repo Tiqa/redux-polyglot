@@ -67,7 +67,7 @@ describe('translate enhancer', () => {
 
     it('should not re-render component on every non-related dispatch call', async () => {
         let pChanged = false;
-        let dispatched = true;
+        let nbDispatch = 0;
 
         class TestComponent extends PureComponent {
             componentWillReceiveProps(nextProps) {
@@ -82,7 +82,7 @@ describe('translate enhancer', () => {
 
         class UnrelatedComponent extends PureComponent {
             componentDidMount() {
-                dispatched = true;
+                nbDispatch += 1;
                 this.props.dispatch({ type: 'DUMMY', payload: 're-render on every dispatch' });
             }
 
@@ -103,7 +103,7 @@ describe('translate enhancer', () => {
             </Provider>
         ).toJSON();
 
-        expect(dispatched).toBe(true);
+        expect(nbDispatch).toBe(1);
         expect(pChanged).toBe(false);
     });
 });
