@@ -1,12 +1,15 @@
-import React from 'react';
-import { Provider } from 'react-redux';
+/* eslint-disable react/no-multi-comp, max-len */
+
+import React, { PureComponent } from 'react';
+import { Provider, connect } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import renderer from 'react-test-renderer';
 
 import { polyglotReducer } from './reducer';
 import translate from './translate';
 
-const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
+const dummyReducer = (state = '', action) => (action.type === 'DUMMY' ? action.payload : state);
+const createRootReducer = () => combineReducers({ polyglot: polyglotReducer, dummy: dummyReducer });
 const fakeStore = createStore(createRootReducer(), {
     polyglot: { locale: 'en', phrases: { hello: 'hello' } },
 });
@@ -60,5 +63,47 @@ describe('translate enhancer', () => {
             const TranslatedComponent = translate(createAnonymousComponent());
             expect(TranslatedComponent.displayName).toBe(translatedDefaultName);
         });
+    });
+
+    it('should not re-render component on every non-related dispatch call', async () => {
+        let pChanged = false;
+        let dispatched = true;
+
+        class TestComponent extends PureComponent {
+            componentWillReceiveProps(nextProps) {
+                if (nextProps.p !== this.props.p) pChanged = true;
+            }
+
+            render() {
+                return <div data-t={this.props.p.t('hello')} />;
+            }
+        }
+
+
+        class UnrelatedComponent extends PureComponent {
+            componentDidMount() {
+                dispatched = true;
+                this.props.dispatch({ type: 'DUMMY', payload: 're-render on every dispatch' });
+            }
+
+            render() {
+                return <div>{ this.props.dummy }</div>;
+            }
+        }
+
+        const EnhancedTestComponent = translate(TestComponent);
+        const ConnectedUnrelatedComponent = connect((state) => ({ dummy: state.dummy }))(UnrelatedComponent);
+
+        renderer.create(
+            <Provider store={fakeStore}>
+                <div>
+                    <EnhancedTestComponent />
+                    <ConnectedUnrelatedComponent />
+                </div>
+            </Provider>
+        ).toJSON();
+
+        expect(dispatched).toBe(true);
+        expect(pChanged).toBe(false);
     });
 });
