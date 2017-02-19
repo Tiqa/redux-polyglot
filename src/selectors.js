@@ -17,7 +17,7 @@ const getPolyglotScope = (state, { polyglotScope = '' }) => (
     polyglotScope === '' ? '' : `${polyglotScope}.`
 );
 
-const getPolyglotOptions = (state, { polyglotOptions = {} }) => polyglotOptions;
+const getPolyglotOptions = (state, { polyglotOptions }) => polyglotOptions;
 
 const getPolyglot = createSelector(
     getLocale,
@@ -36,30 +36,58 @@ const getTranslation = createSelector(
     (p, scope) => (text, ...args) => p.t(scope + text, ...args)
 );
 
-const getTranslationMorphed = (...args) => f => compose(f, getTranslation(...args));
-const getTranslationUpperCased = (...args) => getTranslationMorphed(...args)(toUpper);
-const getTranslationCapitalized = (...args) => getTranslationMorphed(...args)(capitalize);
-const getTranslationTitleized = (...args) => getTranslationMorphed(...args)(titleize);
+const getTranslationMorphed = createSelector(
+    getTranslation,
+    t => f => compose(f, t)
+);
 
-const createGetP = (polyglotOptions) => (state, { polyglotScope } = {}) => {
-    if (!getLocale(state) || !getPhrases(state)) {
-        return {
-            t: identity,
-            tc: identity,
-            tt: identity,
-            tu: identity,
-            tm: identity,
-        };
-    }
-    const options = { polyglotScope, polyglotOptions };
-    return {
-        ...getPolyglot(state, options),
-        t: getTranslation(state, options),
-        tc: getTranslationCapitalized(state, options),
-        tt: getTranslationTitleized(state, options),
-        tu: getTranslationUpperCased(state, options),
-        tm: getTranslationMorphed(state, options),
-    };
+const getTranslationUpperCased = createSelector(
+    getTranslationMorphed,
+    m => m(toUpper)
+);
+
+const getTranslationCapitalized = createSelector(
+    getTranslationMorphed,
+    m => m(capitalize)
+);
+
+const getTranslationTitleized = createSelector(
+    getTranslationMorphed,
+    m => m(titleize)
+);
+
+const createGetP = (polyglotOptions) => {
+    const options = { polyglotOptions };
+    const getP = createSelector(
+        getLocale,
+        getPhrases,
+        getPolyglot,
+        getTranslation,
+        getTranslationCapitalized,
+        getTranslationTitleized,
+        getTranslationUpperCased,
+        getTranslationMorphed,
+        (locale, phrases, p, t, tc, tt, tu, tm) => {
+            if (!locale || !phrases) {
+                return {
+                    t: identity,
+                    tc: identity,
+                    tt: identity,
+                    tu: identity,
+                    tm: identity,
+                };
+            }
+            return {
+                ...p,
+                t,
+                tc,
+                tt,
+                tu,
+                tm,
+            };
+        },
+    );
+    return (state, props) => getP(state, { ...props, ...options });
 };
 
 const getP = createGetP();
