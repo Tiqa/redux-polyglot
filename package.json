@@ -51,7 +51,7 @@
       "js",
       "jsx"
     ],
-    "testPathDirs": [
+    "roots": [
       "src"
     ]
   },
@@ -79,7 +79,7 @@
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.2.1",
     "eslint-plugin-react": "^6.8.0",
-    "jest": "^15.1.1",
+    "jest": "^19.0.2",
     "ramda": "^0.22.1",
     "react-redux": "^5.0.1",
     "react-test-renderer": "^15.4.1",
