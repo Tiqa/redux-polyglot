@@ -62,6 +62,7 @@
     "reselect": "^2.5.4"
   },
   "devDependencies": {
+    "react": "15.5.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^6.1.2",
@@ -80,7 +81,6 @@
     "eslint-plugin-react": "^6.8.0",
     "jest": "^15.1.1",
     "ramda": "^0.22.1",
-    "react": "^15.4.1",
     "react-redux": "^5.0.1",
     "react-test-renderer": "^15.4.1",
     "rimraf": "^2.5.4",
@@ -88,7 +88,7 @@
     "webpack": "^1.14.0"
   },
   "peerDependencies": {
-    "react": "^15.4.1",
+    "react": "15.5.0",
     "react-redux": "^5.0.1"
   }
 }
