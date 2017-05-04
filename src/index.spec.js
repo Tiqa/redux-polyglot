@@ -1,24 +1,41 @@
 import * as all from './';
 import translate from './translate';
 
+const toBe = (type) => (received) => {
+    // eslint-disable-next-line valid-typeof
+    const isFunction = typeof received === type;
+    return {
+        pass: isFunction,
+        message: `expected ${received}${isFunction ? 'not' : ''} to be a function`,
+    };
+};
+
+expect.extend({
+    toBeFunction: toBe('function'),
+    toBeString: toBe('string'),
+});
+
 describe('index', () => {
     it('exports middleware', () => {
-        expect(all.createPolyglotMiddleware).toBeDefined();
+        expect(all.createPolyglotMiddleware).toBeFunction();
     });
     it('exports SET_LANGUAGE action', () => {
-        expect(all.SET_LANGUAGE).toBeDefined();
+        expect(all.SET_LANGUAGE).toBeString();
     });
     it('exports setLanguage action creator', () => {
-        expect(all.setLanguage).toBeDefined();
+        expect(all.setLanguage).toBeFunction();
     });
     it('exports reducer', () => {
-        expect(all.polyglotReducer).toBeDefined();
+        expect(all.polyglotReducer).toBeFunction();
     });
     it('exports selectors', () => {
-        expect(all.getP).toBeDefined();
-        expect(all.getLocale).toBeDefined();
+        expect(all.getP).toBeFunction();
+        expect(all.getLocale).toBeFunction();
     });
     it('exports translate enhancer', () => {
-        expect(translate).toBeDefined();
+        expect(translate).toBeFunction();
+    });
+    it('exports p PropTypes', () => {
+        expect(all.PropType).toBeFunction();
     });
 });
