@@ -47,12 +47,16 @@
   },
   "homepage": "https://github.com/Tiqa/redux-polyglot",
   "jest": {
+   "setupTestFrameworkScriptFile": "./src/private/test/boot.js",
     "moduleFileExtensions": [
       "js",
       "jsx"
     ],
     "roots": [
       "src"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src\/private\/test/"
     ]
   },
   "dependencies": {
