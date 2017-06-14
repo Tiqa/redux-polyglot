@@ -29,6 +29,7 @@ describe('translate enhancer', () => {
         />
     );
     const EnhancedComponent = translate(DummyComponent);
+
     const tree = renderer.create(
         <Provider store={fakeStore}>
             <EnhancedComponent />

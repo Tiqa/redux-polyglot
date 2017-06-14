@@ -76,7 +76,7 @@ describe('selectors', () => {
         });
 
         it('overwrite default scope translation "hello" to "Hi !"', () => {
-            const pBis = getP(fakeState, {
+            const p = getP(fakeState, {
                 polyglotScope: 'test',
                 ownPhrases: { 'test.hello': 'Hi !' },
             });
@@ -84,7 +84,7 @@ describe('selectors', () => {
         });
 
         it('overwrite multiple default scope translations', () => {
-            const pBis = getP(fakeState, {
+            const p = getP(fakeState, {
                 polyglotScope: 'test',
                 ownPhrases: {
                     'test.hello': 'Hi !',
