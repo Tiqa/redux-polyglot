@@ -140,12 +140,41 @@ translate(Dummy);
 translate('catalog', Dummy); // with polyglotScope
 translate()(Dummy); // curried
 translate('catalog')(Dummy); // curried with polyglotScope.
+translate({ polyglotScope : 'some.nested.data', ... })(Dummy); // curried with object configuration.
 ```
 
 ##### get locale in a component
 You can use the `getLocale()` selector inside a [mapStateToProps](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) from react-redux.
 
 Proptype: ````locale: PropTypes.string,````
+
+### Overwrite phrases
+In some case, you should be able to replace some default phrases by others phrases. 
+
+For doing this, you have to define an object which contains your overwrited phrases. 
+This object is composed of : ``` { 'some.nested.data': 'phrase', ... }``` where `key` is the target path you want to replace and `value` ... the new value.
+
+##### with _getP()_ selector
+Add simply `ownPhrases` property and set the new configuration like above to overwrite  :
+```js
+store.dispatch(setLanguage('en', {
+    some: { nested: { data: { hello: 'hello' } } }
+}));
+const p = getP(store.getState(), {
+    polyglotScope: 'some.nested.data', 
+    ownPhrases: { 'some.nested.data.hello': 'Hi !' }
+});
+console.log(p.tc('hello')) // => will return 'Hi !'
+```
+##### with _translate()_ enhancer
+Instead passing only _string_ as parameter : `translate('catalog', Dummy)`, pass a plain _object_ which contains `polyglotScope` and `ownPhrases` properties :
+```js
+translate({ 
+    polyglotScope : 'some.nested.data', 
+    ownPhrases: { 'some.nested.data.catalog': 'Cars' } 
+}, Dummy);
+console.log(p.tc('catalog')) // => will return 'Cars'
+```
 
 ### Use polyglot options
 if you want to use `onMissingKey`, `allowMissing` or `warn` [polyglot](http://airbnb.io/polyglot.js/) options, you can use the `createGetP` function to create a custom `getP`.
