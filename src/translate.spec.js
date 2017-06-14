@@ -29,7 +29,6 @@ describe('translate enhancer', () => {
         />
     );
     const EnhancedComponent = translate(DummyComponent);
-
     const tree = renderer.create(
         <Provider store={fakeStore}>
             <EnhancedComponent />
@@ -48,6 +47,8 @@ describe('translate enhancer', () => {
         expect(translate(Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('', Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('')(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate({ polyglotScope : ''})(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate({ polyglotScope : '', ownPhrases: { 'hello': 'Hi !' } })(Dummy).displayName).toEqual(EnhancedComponent.displayName);
     });
 
     describe('displayName', () => {
