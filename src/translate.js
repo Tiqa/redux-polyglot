@@ -7,8 +7,8 @@ const getDisplayName = Component => (
     Component.displayName || Component.name || 'Component'
 );
 
-const mapPolyglotToProps = polyglotScope => state => ({
-    p: getP(state, polyglotScope)
+const mapPolyglotToProps = options => state => ({
+    p: getP(state, options),
 });
 
 const translateEnhancer = curry((polyglotScope, Component) => {
@@ -20,10 +20,16 @@ const translateEnhancer = curry((polyglotScope, Component) => {
 const translate = (fstArg, sndArg) => {
     if (fstArg === undefined && sndArg === undefined)
         return translateEnhancer('');
+
     else if (isFunction(fstArg))
-        return translateEnhancer('', fstArg);
-    else if ((isString(fstArg) || isObject(fstArg)) && sndArg === undefined)
+        return translateEnhancer({ polyglotScope: '' }, fstArg);
+
+    else if (isString(fstArg) && sndArg === undefined)
+        return translateEnhancer({ polyglotScope: fstArg });
+
+    else if (isObject(fstArg) && sndArg === undefined)
         return translateEnhancer(fstArg);
+
     return translateEnhancer(fstArg, sndArg);
 };
 

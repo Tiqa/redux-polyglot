@@ -1,7 +1,7 @@
 import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
-import { identity, isObject } from './private/utils';
+import { identity } from './private/utils';
 
 const path = arrPath => obj => arrPath.reduce((cursor, key) => cursor && cursor[key], obj);
 const toUpper = str => str.toUpperCase();
@@ -15,15 +15,15 @@ const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
 
 const getPolyglotScope = (state, { polyglotScope = '' }) => (
-     (polyglotScope === '')
-        ? ''
-        : `${polyglotScope}.`
+     (polyglotScope !== '')
+        ? `${polyglotScope}.`
+        : ''
 );
 
-const getPolyglotOwnPhrases = (state, polyglotScope) => (
-    (isObject(polyglotScope) && polyglotScope.ownPhrases)
-        ? polyglotScope.ownPhrases
-        : null
+const getPolyglotOwnPhrases = (state, { ownPhrases = '' }) => (
+    (ownPhrases !== '')
+        ? ownPhrases
+        : ''
 );
 
 const getPolyglotOptions = (state, { polyglotOptions }) => polyglotOptions;
@@ -43,10 +43,10 @@ const getTranslation = createSelector(
     getPolyglot,
     getPolyglotScope,
     getPolyglotOwnPhrases,
-    (p, polyglotScope, ownPhrases) => (polyglotScopeKey, ...args) => {
+    (p, polyglotScope, ownPhrases) => (polyglotKey, ...args) => {
 
-        const fullPath = polyglotScope + polyglotScopeKey;
-        const ownPhrase = (ownPhrases)
+        const fullPath = polyglotScope + polyglotKey;
+        const ownPhrase = (ownPhrases !== '')
             ? ownPhrases[fullPath]
             : null;
 

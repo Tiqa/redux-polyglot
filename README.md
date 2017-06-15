@@ -140,7 +140,7 @@ translate(Dummy);
 translate('catalog', Dummy); // with polyglotScope
 translate()(Dummy); // curried
 translate('catalog')(Dummy); // curried with polyglotScope.
-translate({ polyglotScope : 'some.nested.data', ... })(Dummy); // curried with object configuration.
+translate({ polyglotScope : 'some.nested.data', ownPhrases: 'some.nested.data.hello': 'Hi !', ... })(Dummy); // curried with object configuration.
 ```
 
 ##### get locale in a component
