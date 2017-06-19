@@ -44,7 +44,6 @@ const getTranslation = createSelector(
     getPolyglotScope,
     getPolyglotOwnPhrases,
     (p, polyglotScope, ownPhrases) => (polyglotKey, ...args) => {
-
         const fullPath = polyglotScope + polyglotKey;
         const ownPhrase = (ownPhrases !== '')
             ? ownPhrases[fullPath]
