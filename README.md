@@ -155,7 +155,7 @@ For doing this, you have to define an object which contains your overwrited phra
 This object is composed of : ``` { 'some.nested.data': 'phrase', ... }``` where `key` is the target path you want to replace and `value` ... the new value.
 
 ##### with _getP()_ selector
-Add simply `ownPhrases` property and set the new configuration like above to overwrite  :
+Simply add `ownPhrases` property and set the new configuration like above to overwrite  :
 ```js
 store.dispatch(setLanguage('en', {
     some: { nested: { data: { hello: 'hello' } } }
