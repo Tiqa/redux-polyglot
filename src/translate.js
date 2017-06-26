@@ -7,12 +7,12 @@ const getDisplayName = Component => (
     Component.displayName || Component.name || 'Component'
 );
 
-const mapOptionsToProps = options => state => ({
+const mapPolyglotToProps = options => state => ({
     p: getP(state, options),
 });
 
 const translateEnhancer = curry((polyglotScope, Component) => {
-    const Connected = connect(mapOptionsToProps(polyglotScope))(Component);
+    const Connected = connect(mapPolyglotToProps(polyglotScope))(Component);
     Connected.displayName = `Translated(${getDisplayName(Connected.WrappedComponent)})`;
     return Connected;
 });
@@ -22,7 +22,7 @@ const translate = (fstArg, sndArg) => {
         return translateEnhancer({});
 
     else if (isFunction(fstArg))
-        return translateEnhancer({ polyglotScope: '' }, fstArg);
+        return translateEnhancer({}, fstArg);
 
     else if (isString(fstArg) && sndArg === undefined)
         return translateEnhancer({ polyglotScope: fstArg });
