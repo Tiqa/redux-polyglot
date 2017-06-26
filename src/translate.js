@@ -1,14 +1,14 @@
 import curry from 'lodash.curry';
 import { connect } from 'react-redux';
 import { getP } from './selectors';
-import { isFunction, isString } from './private/utils';
+import { isFunction, isString, isObject } from './private/utils';
 
 const getDisplayName = Component => (
     Component.displayName || Component.name || 'Component'
 );
 
-const mapPolyglotToProps = polyglotScope => state => ({
-    p: getP(state, { polyglotScope }),
+const mapPolyglotToProps = options => state => ({
+    p: getP(state, options),
 });
 
 const translateEnhancer = curry((polyglotScope, Component) => {
@@ -19,11 +19,17 @@ const translateEnhancer = curry((polyglotScope, Component) => {
 
 const translate = (fstArg, sndArg) => {
     if (fstArg === undefined && sndArg === undefined)
-        return translateEnhancer('');
+        return translateEnhancer({});
+
     else if (isFunction(fstArg))
-        return translateEnhancer('', fstArg);
+        return translateEnhancer({}, fstArg);
+
     else if (isString(fstArg) && sndArg === undefined)
+        return translateEnhancer({ polyglotScope: fstArg });
+
+    else if (isObject(fstArg) && sndArg === undefined)
         return translateEnhancer(fstArg);
+
     return translateEnhancer(fstArg, sndArg);
 };
 

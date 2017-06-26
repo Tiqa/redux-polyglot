@@ -74,5 +74,26 @@ describe('selectors', () => {
             expect(getP(fakeState).t('test.hello')).toBe('bonjour');
             expect(getP(fakeState).tu('test.hello')).toBe('BONJOUR');
         });
+
+        it('overwrite default scope translation "hello" to "Hi !"', () => {
+            const p1 = getP(fakeState, {
+                polyglotScope: 'test',
+                ownPhrases: { 'test.hello': 'Hi !' },
+            });
+            expect(p1.tc('hello')).toBe('Hi !');
+        });
+
+        it('overwrite multiple default scope translations', () => {
+            const p2 = getP(fakeState, {
+                polyglotScope: 'test',
+                ownPhrases: {
+                    'test.hello': 'Hi !',
+                    'test.hello_world': 'Hi WORLD !',
+                },
+            });
+
+            expect(p2.tc('hello_world')).toBe('Hi WORLD !');
+            expect(p2.tc('hello')).toBe('Hi !');
+        });
     });
 });

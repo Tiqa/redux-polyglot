@@ -48,6 +48,9 @@ describe('translate enhancer', () => {
         expect(translate(Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('', Dummy).displayName).toEqual(EnhancedComponent.displayName);
         expect(translate('')(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate({ polyglotScope: '' })(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate({ polyglotScope: '', ownPhrases: { hello: 'Hi !' } })(Dummy).displayName).toEqual(EnhancedComponent.displayName);
+        expect(translate({ ownPhrases: { hello: 'Hi !' } })(Dummy).displayName).toEqual(EnhancedComponent.displayName);
     });
 
     describe('displayName', () => {

@@ -13,8 +13,17 @@ const capitalize = adjustString(toUpper, 0);
 
 const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
+
 const getPolyglotScope = (state, { polyglotScope = '' }) => (
-    polyglotScope === '' ? '' : `${polyglotScope}.`
+     (polyglotScope !== '')
+        ? `${polyglotScope}.`
+        : ''
+);
+
+const getPolyglotOwnPhrases = (state, { ownPhrases = '' }) => (
+    (ownPhrases !== '')
+        ? ownPhrases
+        : ''
 );
 
 const getPolyglotOptions = (state, { polyglotOptions }) => polyglotOptions;
@@ -33,7 +42,15 @@ const getPolyglot = createSelector(
 const getTranslation = createSelector(
     getPolyglot,
     getPolyglotScope,
-    (p, scope) => (text, ...args) => p.t(scope + text, ...args)
+    getPolyglotOwnPhrases,
+    (p, polyglotScope, ownPhrases) => (polyglotKey, ...args) => {
+        const fullPath = polyglotScope + polyglotKey;
+        const ownPhrase = (ownPhrases !== '')
+            ? ownPhrases[fullPath]
+            : null;
+
+        return ownPhrase || p.t(fullPath, ...args);
+    }
 );
 
 const getTranslationMorphed = createSelector(
