@@ -51,7 +51,7 @@ It takes 3 parameters and return a middleware :
 - 2 - `getLocale :: Object -> String`
     - a function that take the catched action as parameter and return new language.
 - 3 - `getPhrases :: String -> Promise Object`
-    - a function that take the language (as provided by `setLocale`) and return a Promise of Object ( Object should be `polyglot phrases` )
+    - a function that take the language (as provided by `getLocale`) and return a Promise of Object ( Object should be `polyglot phrases` )
 
 the middleware will catch `actionToCatch`
 
@@ -149,9 +149,9 @@ You can use the `getLocale()` selector inside a [mapStateToProps](https://github
 Proptype: ````locale: PropTypes.string,````
 
 ### Overwrite phrases
-In some case, you should be able to replace some default phrases by others phrases. 
+In some case, you should be able to replace some default phrases by others phrases.
 
-For doing this, you have to define an object which contains your overwrited phrases. 
+For doing this, you have to define an object which contains your overwrited phrases.
 This object is composed of : ``` { 'some.nested.data': 'phrase', ... }``` where `key` is the target path you want to replace and `value` ... the new value.
 
 ##### with _getP()_ selector
@@ -161,7 +161,7 @@ store.dispatch(setLanguage('en', {
     some: { nested: { data: { hello: 'hello' } } }
 }));
 const p = getP(store.getState(), {
-    polyglotScope: 'some.nested.data', 
+    polyglotScope: 'some.nested.data',
     ownPhrases: { 'some.nested.data.hello': 'Hi !' }
 });
 console.log(p.tc('hello')) // => will return 'Hi !'
@@ -169,9 +169,9 @@ console.log(p.tc('hello')) // => will return 'Hi !'
 ##### with _translate()_ enhancer
 Instead passing only _string_ as parameter : `translate('catalog', Dummy)`, pass a plain _object_ which contains `polyglotScope` and `ownPhrases` properties :
 ```js
-translate({ 
-    polyglotScope : 'some.nested.data', 
-    ownPhrases: { 'some.nested.data.catalog': 'Cars' } 
+translate({
+    polyglotScope : 'some.nested.data',
+    ownPhrases: { 'some.nested.data.catalog': 'Cars' }
 }, Dummy);
 console.log(p.tc('catalog')) // => will return 'Cars'
 ```
