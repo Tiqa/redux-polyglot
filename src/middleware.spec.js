@@ -1,91 +1,44 @@
 /* eslint-disable max-len */
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { path } from 'ramda';
+import configureStore from 'redux-mock-store';
 
-import { polyglotReducer } from './reducer';
 import { createPolyglotMiddleware } from './middleware';
 
 const CATCHED_ACTION = 'CATCHED_ACTION';
 const OTHER_CATCHED_ACTION = 'OTHER_CATCHED_ACTION';
 const UNCATCHED_ACTION = 'UNCATCHED_ACTION';
 
-const spy = impl => {
-    const fn = jest.fn().mockImplementation(impl);
-    fn.constructor = Function; // for being appear like a vanilla JS Function.
-    return fn;
-};
+const fakePhrases = { hello: 'hello' };
 
-const createRootReducer = () => combineReducers({ polyglot: polyglotReducer });
-const createFakeStore = (getLocale, getPhrases) => {
-    const middleware = createPolyglotMiddleware(
-        [CATCHED_ACTION, OTHER_CATCHED_ACTION], getLocale, getPhrases
-    );
-    return createStore(createRootReducer(), {}, applyMiddleware(middleware));
-};
+const mockStore = configureStore([
+    createPolyglotMiddleware(
+        [CATCHED_ACTION, OTHER_CATCHED_ACTION],
+        path(['payload', 'locale']),
+        () => new Promise(resolve => setTimeout(resolve, 1000, fakePhrases))
+    ),
+]);
 
 describe('middleware', () => {
-    let fakePhrases = { hello: 'hello' };
-    const getLocale = spy(action => (action.payload && action.payload.locale) || 'en');
-    const getPhrases = spy(() => new Promise((resolve) => (
-        setTimeout(resolve, 1, fakePhrases)
-    )));
-    const fakeStore = createFakeStore(getLocale, getPhrases);
+    jest.useFakeTimers();
 
-    beforeEach(() => {
-        getLocale.mockClear();
-        getPhrases.mockClear();
+    it('doesn\'t impact the store when action is unknown.', (done) => {
+        const store = mockStore({ polyglot: {} });
+        store.dispatch({ type: UNCATCHED_ACTION });
+        setImmediate(() => {
+            expect(store.getActions()).toMatchSnapshot();
+            done();
+        });
     });
 
-    it('doesn\'t impact the store when action is unknown.', () => {
-        const listener = spy(() => {
-            expect(getLocale).not.toBeCalled();
-            expect(getPhrases).not.toBeCalled();
-            expect(fakeStore.getState()).toEqual({
-                polyglot: { locale: null, phrases: null },
-            });
+    it('impacts the store when action is CATCHED_ACTION.', (done) => {
+        const store = mockStore({ polyglot: {} });
+        store.dispatch({ type: CATCHED_ACTION, payload: { locale: 'en' } });
+        jest.runAllTimers();
+        setImmediate(() => {
+            expect(store.getActions()).toMatchSnapshot();
+            done();
         });
-        const unsubscribe = fakeStore.subscribe(listener);
-        fakeStore.dispatch({ type: UNCATCHED_ACTION });
-        unsubscribe();
-        expect(listener).toHaveBeenCalledTimes(1);
-    });
-
-    it('impacts the store when action is CATCHED_ACTION.', (cb) => {
-        let counter = 0;
-        let unsubscribe;
-        const listener = spy(() => {
-            counter += 1;
-            if (counter === 2) {
-                expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION });
-                expect(getPhrases).toBeCalledWith('en');
-                expect(fakeStore.getState()).toEqual({
-                    polyglot: { locale: 'en', phrases: { hello: 'hello' } },
-                });
-                unsubscribe();
-                expect(listener).toHaveBeenCalledTimes(2);
-                cb();
-            }
-        });
-        unsubscribe = fakeStore.subscribe(listener);
-        fakeStore.dispatch({ type: CATCHED_ACTION });
-    });
-
-    it('impacts the store when locale is same as previous one.', (cb) => {
-        const oldState = fakeStore.getState();
-        fakePhrases = {};
-        let counter = 0;
-        let unsubscribe;
-        const listener = spy(() => {
-            counter += 1;
-            expect(getLocale).toBeCalledWith({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
-            expect(getPhrases).toBeCalledWith('fr');
-            if (counter === 2) {
-                expect(fakeStore.getState()).not.toEqual(oldState);
-                unsubscribe();
-                cb();
-            }
-        });
-        unsubscribe = fakeStore.subscribe(listener);
-        fakeStore.dispatch({ type: CATCHED_ACTION, payload: { locale: 'fr' } });
     });
 
     describe('Errors catching', () => {
@@ -133,7 +86,7 @@ describe('middleware', () => {
         });
 
         describe('reducer', () => {
-            const polyglotMiddleware = createPolyglotMiddleware([], getLocale, getPhrases);
+            const polyglotMiddleware = createPolyglotMiddleware([], () => 'en', () => Promise.resolve({}));
             const rootReducer = combineReducers({ test: (state = 42) => state });
             it('throws an error when polyglot is not in "state.polyglot"', () => {
                 expect(() => {
