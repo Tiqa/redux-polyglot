@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`middleware doesn't impact the store when action is unknown. 1`] = `
+Array [
+  Object {
+    "type": "UNCATCHED_ACTION",
+  },
+]
+`;
+
+exports[`middleware impacts the store when action is CATCHED_ACTION. 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "locale": "en",
+    },
+    "type": "CATCHED_ACTION",
+  },
+  Object {
+    "payload": Object {
+      "locale": "en",
+      "phrases": Object {
+        "hello": "hello",
+      },
+    },
+    "type": "@@polyglot/SET_LANGUAGE",
+  },
+]
+`;
