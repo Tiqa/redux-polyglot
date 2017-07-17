@@ -7,9 +7,9 @@
     "build": "babel src --out-dir dist --ignore '*.spec.js'",
     "clean": "rimraf ./dist",
     "test": "jest --coverage",
-    "test-all": "npm run -s prepublish",
-    "watch-test": "jest --watch --coverage",
-    "wtest": "npm run watch-test",
+    "test:all": "npm run -s prepublish",
+    "test:watch": "jest --watch --coverage",
+    "tw": "npm run test:watch",
     "prepublish": "node scripts/prepublish.js",
     "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
@@ -66,7 +66,6 @@
     "reselect": "^2.5.4"
   },
   "devDependencies": {
-    "react": "15.5.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^6.1.2",
@@ -85,8 +84,10 @@
     "eslint-plugin-react": "^6.8.0",
     "jest": "^20.0.3",
     "ramda": "^0.22.1",
+    "react": "15.5.0",
     "react-redux": "^5.0.1",
     "react-test-renderer": "^15.4.1",
+    "redux-mock-store": "^1.2.3",
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.5",
     "webpack": "^1.14.0"
