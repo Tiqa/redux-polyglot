@@ -28,7 +28,7 @@ const getPolyglotOwnPhrases = (state, { ownPhrases = '' }) => (
 
 const getPolyglotOptions = (state, { polyglotOptions }) => polyglotOptions;
 
-const getPolyglot = createSelector(
+const createGetPolyglot = () => createSelector(
     getLocale,
     getPhrases,
     getPolyglotOptions,
@@ -39,8 +39,8 @@ const getPolyglot = createSelector(
     })
 );
 
-const getTranslation = createSelector(
-    getPolyglot,
+const createGetTranslation = () => createSelector(
+    createGetPolyglot(),
     getPolyglotScope,
     getPolyglotOwnPhrases,
     (p, polyglotScope, ownPhrases) => (polyglotKey, ...args) => {
@@ -53,23 +53,23 @@ const getTranslation = createSelector(
     }
 );
 
-const getTranslationMorphed = createSelector(
-    getTranslation,
+const createGetTranslationMorphed = () => createSelector(
+    createGetTranslation(),
     t => f => compose(f, t)
 );
 
-const getTranslationUpperCased = createSelector(
-    getTranslationMorphed,
+const createGetTranslationUpperCased = () => createSelector(
+    createGetTranslationMorphed(),
     m => m(toUpper)
 );
 
-const getTranslationCapitalized = createSelector(
-    getTranslationMorphed,
+const createGetTranslationCapitalized = () => createSelector(
+    createGetTranslationMorphed(),
     m => m(capitalize)
 );
 
-const getTranslationTitleized = createSelector(
-    getTranslationMorphed,
+const createGetTranslationTitleized = () => createSelector(
+    createGetTranslationMorphed(),
     m => m(titleize)
 );
 
@@ -78,12 +78,12 @@ const createGetP = (polyglotOptions) => {
     const getP = createSelector(
         getLocale,
         getPhrases,
-        getPolyglot,
-        getTranslation,
-        getTranslationCapitalized,
-        getTranslationTitleized,
-        getTranslationUpperCased,
-        getTranslationMorphed,
+        createGetPolyglot(),
+        createGetTranslation(),
+        createGetTranslationCapitalized(),
+        createGetTranslationTitleized(),
+        createGetTranslationUpperCased(),
+        createGetTranslationMorphed(),
         (locale, phrases, p, t, tc, tt, tu, tm) => {
             if (!locale || !phrases) {
                 return {
