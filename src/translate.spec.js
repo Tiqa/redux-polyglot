@@ -21,11 +21,12 @@ const name = 'DummyComponent';
 DummyComponentWithDisplayName.displayName = name;
 
 describe('translate enhancer', () => {
-    const DummyComponent = ({ p }) => (
+    const DummyComponent = ({ p, dispatch }) => (
         <div
             data-t={p.t('hello')}
             data-tc={p.tc('hello')}
             data-tu={p.tu('hello')}
+            data-dispatch={!!dispatch}
         />
     );
     const EnhancedComponent = translate(DummyComponent);
@@ -40,6 +41,10 @@ describe('translate enhancer', () => {
         expect(tree.props['data-t']).toBe('hello');
         expect(tree.props['data-tc']).toBe('Hello');
         expect(tree.props['data-tu']).toBe('HELLO');
+    });
+
+    it('not inject dispatch prop.', () => {
+        expect(tree.props['data-dispatch']).toBe(false);
     });
 
     it('should return a valid translated component', () => {
