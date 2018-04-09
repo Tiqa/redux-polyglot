@@ -16,7 +16,7 @@ const mapPolyglotToProps = (options) => () => {
 };
 
 const translateEnhancer = curry((polyglotScope, Component) => {
-    const Connected = connect(mapPolyglotToProps(polyglotScope))(Component);
+    const Connected = connect(mapPolyglotToProps(polyglotScope), () => ({}))(Component);
     Connected.displayName = `Translated(${getDisplayName(Connected.WrappedComponent)})`;
     return Connected;
 });

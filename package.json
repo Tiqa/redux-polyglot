@@ -83,6 +83,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.1",
     "eslint-plugin-react": "^6.8.0",
     "jest": "^20.0.3",
+    "prop-types": "^15.6.1",
     "ramda": "^0.22.1",
     "react": "15.5.0",
     "react-redux": "^5.0.1",
@@ -94,6 +95,7 @@
   },
   "peerDependencies": {
     "react": "^15.5.4",
-    "react-redux": "^5.0.5"
+    "react-redux": "^5.0.5",
+    "prop-types": "^15.0.0"
   }
 }
