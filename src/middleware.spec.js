@@ -2,6 +2,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { path } from 'ramda';
 import configureStore from 'redux-mock-store';
+import { isFunction } from './private/utils';
 
 import { createPolyglotMiddleware } from './middleware';
 
@@ -93,6 +94,14 @@ describe('middleware', () => {
                     createStore(rootReducer, {}, applyMiddleware(polyglotMiddleware));
                 }).toThrowError('polyglotReducer : need to be store in "state.polyglot"');
             });
+        });
+    });
+
+    describe('Return', () => {
+        it('returns the promise getPhrases called', () => {
+            const store = mockStore({ polyglot: {} });
+            const action = store.dispatch({ type: CATCHED_ACTION });
+            expect(typeof action.then).toBe('function');
         });
     });
 });
