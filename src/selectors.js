@@ -95,7 +95,7 @@ const createGetP = (polyglotOptions) => {
                     tm: identity,
                 };
             }
-            return assign(p, t, tc, tt, tu, tm);
+            return assign({}, p, { t, tc, tt, tu, tm });
         },
     );
     return (state, props) => getP(state, { ...props, ...options });
