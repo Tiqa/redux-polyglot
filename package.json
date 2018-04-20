@@ -60,6 +60,7 @@
     ]
   },
   "dependencies": {
+    "lodash.assign": "^4.2.0",
     "lodash.curry": "^4.1.1",
     "node-polyglot": "^2.2.2",
     "redux": "^3.6.0",
