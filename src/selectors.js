@@ -16,7 +16,7 @@ const getLocale = path(['polyglot', 'locale']);
 const getPhrases = path(['polyglot', 'phrases']);
 
 const getPolyglotScope = (state, { polyglotScope = '' }) => (
-     (polyglotScope !== '')
+    (polyglotScope !== '')
         ? `${polyglotScope}.`
         : ''
 );

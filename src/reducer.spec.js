@@ -14,7 +14,7 @@ const setLanguageAction = {
     },
 };
 
- // check if an unknown action impact the state
+// check if an unknown action impact the state
 const checkUnknownAction = state => expect(state).toEqual(polyglotReducer(state, unknownAction));
 
 describe('reducer', () => {
