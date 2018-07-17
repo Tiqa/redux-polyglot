@@ -177,7 +177,7 @@ console.log(p.tc('catalog')) // => will return 'Cars'
 ```
 
 ### Use polyglot options
-if you want to use `onMissingKey`, `allowMissing` or `warn` [polyglot](http://airbnb.io/polyglot.js/) options, you can use the `createGetP` function to create a custom `getP`.
+if you want to use `onMissingKey`, `allowMissing` or `warn` [polyglot](http://airbnb.io/polyglot.js/) options, you can use the `createGetP` factory selector to create a custom `getP`.
 
 usage :
 ```js
@@ -189,6 +189,8 @@ const options = {
 
 export const getP = createGetP(options);
 ```
+
+Please note you cannot use translate hoc with a custom `getP` selector.
 
 ## Team
 
