@@ -53,7 +53,7 @@ It takes 3 parameters and return a middleware :
 - 3 - `getPhrases :: String -> Promise Object`
     - a function that take the language (as provided by `getLocale`) and return a Promise of Object ( Object should be `polyglot phrases` )
 
-the middleware will catch `actionToCatch`
+the middleware will catch `actionToCatch`; note: when a matching action is dispatched, it will return this promise called so you can await on it (pretty useful on SSR)
 
 ```javascript
 import { createStore, combineReducers, applyMiddleware } from 'redux';
