@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import * as all from './';
 import translate from './translate';
 
