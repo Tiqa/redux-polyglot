@@ -2,7 +2,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { path } from 'ramda';
 import configureStore from 'redux-mock-store';
-import { isFunction } from './private/utils';
 
 import { createPolyglotMiddleware } from './middleware';
 
@@ -97,11 +96,18 @@ describe('middleware', () => {
         });
     });
 
-    describe('Return', () => {
+    describe('Async dispatch', () => {
         it('returns the promise getPhrases called', () => {
             const store = mockStore({ polyglot: {} });
             const action = store.dispatch({ type: CATCHED_ACTION });
             expect(typeof action.then).toBe('function');
+        });
+        it('returns a promise resolving CATCHED_ACTION', async () => {
+            const store = mockStore({ polyglot: {} });
+            const promise = store.dispatch({ type: CATCHED_ACTION });
+            jest.runAllTimers();
+            const result = await promise;
+            expect(result).toEqual({ type: CATCHED_ACTION });
         });
     });
 });
