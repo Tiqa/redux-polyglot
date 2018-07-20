@@ -29,9 +29,10 @@ export const createPolyglotMiddleware = (catchedAction, getLocale, getPhrases) =
         return next => action => {
             if (actions.includes(action.type)) {
                 const locale = getLocale(action);
-                next(action);
+                const nexted = next(action);
                 return getPhrases(locale).then(phrases => {
                     dispatch(setLanguage(locale, phrases));
+                    return nexted;
                 });
             }
             return next(action);
