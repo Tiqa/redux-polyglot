@@ -57,14 +57,15 @@
     ],
     "coveragePathIgnorePatterns": [
       "src/private/test/"
-    ]
+    ],
+    "testURL": "http://localhost"
   },
   "dependencies": {
     "lodash.assign": "^4.2.0",
     "lodash.curry": "^4.1.1",
-    "node-polyglot": "^2.2.2",
+    "node-polyglot": "^2.3.0",
     "redux": "^4.0.0",
-    "reselect": "^3.0.1"
+    "reselect": "^4.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
