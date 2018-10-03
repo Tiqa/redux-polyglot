@@ -95,7 +95,22 @@ const createGetP = (polyglotOptions) => {
             return assign({}, p, { t, tc, tt, tu, tm, has });
         }
     );
-    return (state, props) => getP(state, { ...props, ...options });
+
+    const getScopedP = (state, props = {}) => {
+        const p = getP(state, { ...props, ...options });
+        const getDeeperScope = (deeperScope) =>
+            getScopedP(state, {
+                ...props,
+                ...options,
+                polyglotScope: props.polyglotScope
+                    ? `${props.polyglotScope}.${deeperScope}`
+                    : deeperScope,
+            });
+        p.getDeeperScope = getDeeperScope;
+        return p;
+    };
+
+    return getScopedP;
 };
 
 const getP = createGetP();

@@ -4,7 +4,13 @@ import { getP, getLocale } from './selectors';
 const fakeState = {
     polyglot: {
         locale: 'fr',
-        phrases: { test: { hello: 'bonjour', hello_world: 'bonjour monde' } },
+        phrases: {
+            test: {
+                hello: 'bonjour',
+                hello_world: 'bonjour monde',
+                errors: { invalid: 'invalide', nested: { other: 'thing' } },
+            },
+        },
     },
 };
 
@@ -104,6 +110,31 @@ describe('selectors', () => {
                 const emptyP = getP({});
 
                 expect(emptyP.has('test.hello')).toBeFalsy();
+            });
+        });
+
+        describe('#getDeeperScope', () => {
+            let deeperP;
+            beforeEach(() => {
+                deeperP = p.getDeeperScope('errors');
+            });
+
+            it('should translate correctly', () => {
+                expect(deeperP.t('invalid')).toEqual('invalide');
+            });
+
+            it('should check if an string exists correcly', () => {
+                expect(deeperP.has('invalid')).toBeTruthy();
+            });
+
+            describe('when nesting again', () => {
+                beforeEach(() => {
+                    deeperP = deeperP.getDeeperScope('nested');
+                });
+
+                it('should translate correctly', async () => {
+                    expect(deeperP.t('other')).toEqual('thing');
+                });
             });
         });
     });
