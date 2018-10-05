@@ -90,9 +90,10 @@ const createGetP = (polyglotOptions) => {
                     tu: identity,
                     tm: identity,
                     has: () => false,
+                    locale: () => p.locale(),
                 };
             }
-            return assign({}, p, { t, tc, tt, tu, tm, has });
+            return { ...p, t, tc, tt, tu, tm, has, locale: () => locale, extend: p.extend };
         }
     );
 

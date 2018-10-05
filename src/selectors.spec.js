@@ -40,6 +40,8 @@ describe('selectors', () => {
                 tu: expect.any(Function),
                 tm: expect.any(Function),
                 has: expect.any(Function),
+                locale: expect.any(Function),
+                extend: expect.any(Function),
             });
         });
 
