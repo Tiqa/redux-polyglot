@@ -34,6 +34,7 @@ describe('selectors', () => {
                 currentLocale: 'fr',
                 onMissingKey: null,
                 warn: expect.any(Function),
+                ut: expect.any(Function),
                 t: expect.any(Function),
                 tc: expect.any(Function),
                 tt: expect.any(Function),
@@ -97,6 +98,10 @@ describe('selectors', () => {
 
             expect(p2.tc('hello_world')).toBe('Hi WORLD !');
             expect(p2.tc('hello')).toBe('Hi !');
+        });
+
+        it('should allow unscoped translations', () => {
+            expect(p.ut('test.hello')).toEqual('bonjour');
         });
 
         describe('using #has', () => {

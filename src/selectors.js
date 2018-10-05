@@ -1,4 +1,3 @@
-import assign from 'lodash.assign';
 import { compose } from 'redux';
 import { createSelector } from 'reselect';
 import Polyglot from 'node-polyglot';
@@ -89,11 +88,23 @@ const createGetP = (polyglotOptions) => {
                     tt: identity,
                     tu: identity,
                     tm: identity,
+                    ut: identity,
                     has: () => false,
                     locale: () => p.locale(),
                 };
             }
-            return { ...p, t, tc, tt, tu, tm, has, locale: () => locale, extend: p.extend };
+            return {
+                ...p,
+                t,
+                tc,
+                tt,
+                tu,
+                tm,
+                has,
+                locale: () => locale,
+                extend: p.extend,
+                ut: p.t,
+            };
         }
     );
 
