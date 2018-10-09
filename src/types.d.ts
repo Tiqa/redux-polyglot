@@ -22,7 +22,7 @@ declare module '@cabify-dev/redux-polyglot' {
     export type getLocaleFunction = (action: SimpleAction) => string;
     export type getPhrasesFunction = (locale: string) => Promise<any>;
 
-    interface ReduxPolyglot {
+    export interface ReduxPolyglot {
         t: translate;
         tc: translate;
         tm: translate;
