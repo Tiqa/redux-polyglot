@@ -5,7 +5,7 @@ declare module '@cabify-dev/redux-polyglot' {
 
     export type translate = (
         phrase: string,
-        smartCountOrInterpolationOptions: number | PolyglotInterpolationOptions
+        smartCountOrInterpolationOptions?: number | PolyglotInterpolationOptions
     ) => string;
 
     interface SimpleAction {
