@@ -18,6 +18,7 @@
     "type": "git",
     "url": "https://github.com/Tiqa/redux-polyglot.git"
   },
+  "types": "./dist/types.d.ts",
   "keywords": [
     "polyglot",
     "redux",
