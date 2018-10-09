@@ -1,16 +1,12 @@
 import Polyglot from 'node-polyglot';
 
 declare module '@cabify-dev/redux-polyglot' {
-    export interface PolyglotScopeVars {
-        [varName: string]: string | number;
-    }
-    export type translateSimple = (phrase: string) => string;
-    export type translateSmartCount = (phrase: string, smartCount: number) => string;
-    export type translateInterpolations = (
+    export type PolyglotInterpolationOptions = Polyglot.InterpolationOptions;
+
+    export type translate = (
         phrase: string,
-        interpolationOptions: Polyglot.InterpolationOptions
+        smartCountOrInterpolationOptions: number | PolyglotInterpolationOptions
     ) => string;
-    export type translate = translateSimple | translateSmartCount | translateInterpolations;
 
     interface SimpleAction {
         type: string;
