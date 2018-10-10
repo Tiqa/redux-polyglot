@@ -1,36 +1,26 @@
-import { toUpper, evolve, is, pipe, values, all, equals, either, isNil } from 'ramda';
+import { toUpper } from 'ramda';
 import { getP, getLocale } from './selectors';
-
-const isValidPolyglot = pipe(
-    evolve({
-        phrases: is(Object),
-        currentLocale: is(String),
-        onMissingKey: either(isNil, is(Boolean)),
-        warn: is(Function),
-        t: is(Function),
-        tc: is(Function),
-        tt: is(Function),
-        tu: is(Function),
-        tm: is(Function),
-    }),
-    values,
-    all(equals(true)),
-);
 
 const fakeState = {
     polyglot: {
         locale: 'fr',
-        phrases: { test: { hello: 'bonjour', hello_world: 'bonjour monde' } },
+        phrases: {
+            test: {
+                hello: 'bonjour',
+                hello_world: 'bonjour monde',
+                errors: { invalid: 'invalide', nested: { other: 'thing' } },
+            },
+        },
     },
 };
 
 describe('selectors', () => {
     describe('getLocale', () => {
-        it('doesn\'t crash when state is an empty object', () => {
+        it("doesn't crash when state is an empty object", () => {
             expect(getLocale({})).toBe(undefined);
         });
 
-        it('doesn\'t crash when state is an empty object', () => {
+        it("doesn't crash when state is an empty object", () => {
             expect(getLocale(fakeState)).toBe('fr');
         });
     });
@@ -39,7 +29,21 @@ describe('selectors', () => {
         const p = getP(fakeState, { polyglotScope: 'test' });
 
         it('gives a valid redux-polyglot object', () => {
-            expect(isValidPolyglot(p)).toBe(true);
+            expect(p).toMatchObject({
+                phrases: expect.any(Object),
+                currentLocale: 'fr',
+                onMissingKey: null,
+                warn: expect.any(Function),
+                ut: expect.any(Function),
+                t: expect.any(Function),
+                tc: expect.any(Function),
+                tt: expect.any(Function),
+                tu: expect.any(Function),
+                tm: expect.any(Function),
+                has: expect.any(Function),
+                locale: expect.any(Function),
+                extend: expect.any(Function),
+            });
         });
 
         it('returns phrase key if no locale defined', () => {
@@ -94,6 +98,51 @@ describe('selectors', () => {
 
             expect(p2.tc('hello_world')).toBe('Hi WORLD !');
             expect(p2.tc('hello')).toBe('Hi !');
+        });
+
+        it('should allow unscoped translations', () => {
+            expect(p.ut('test.hello')).toEqual('bonjour');
+        });
+
+        describe('using #has', () => {
+            it('returns true if a key is in he phrases for the current scope', () => {
+                expect(p.has('hello')).toBeTruthy();
+            });
+
+            it('returns false if a key isnt in the current scope', () => {
+                expect(p.has('bye')).toBeFalsy();
+            });
+
+            it('returns false if no locale defined', () => {
+                const emptyP = getP({});
+
+                expect(emptyP.has('test.hello')).toBeFalsy();
+            });
+        });
+
+        describe('#getDeeperScope', () => {
+            let deeperP;
+            beforeEach(() => {
+                deeperP = p.getDeeperScope('errors');
+            });
+
+            it('should translate correctly', () => {
+                expect(deeperP.t('invalid')).toEqual('invalide');
+            });
+
+            it('should check if an string exists correcly', () => {
+                expect(deeperP.has('invalid')).toBeTruthy();
+            });
+
+            describe('when nesting again', () => {
+                beforeEach(() => {
+                    deeperP = deeperP.getDeeperScope('nested');
+                });
+
+                it('should translate correctly', async () => {
+                    expect(deeperP.t('other')).toEqual('thing');
+                });
+            });
         });
     });
 });
