@@ -11,4 +11,5 @@ execOrDie('npm run -s clean', '--- Clean OK ---');
 execOrDie('npm run -s build', '--- Build OK ---');
 execOrDie('npm run -s test', '--- Tests OK ---');
 execOrDie('npm run -s lint', '--- Lint OK ---');
+execOrDie('cp ./src/types.d.ts ./dist/types.d.ts', '--- Copied types OK ---');
 echo('... Prepublish OK ---');
