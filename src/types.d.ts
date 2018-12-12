@@ -35,4 +35,14 @@ declare module '@cabify-dev/redux-polyglot' {
         getLocale: getLocaleFunction,
         getPhrases: getPhrasesFunction
     );
+
+    interface PolyglotState {
+        locale: string;
+        phrases: any;
+    }
+
+    function polyglotReducer(
+        state: PolyglotState = { locale: null, phrases: null },
+        action: SimpleAction
+    ): PolyglotState;
 }
