@@ -37,12 +37,9 @@ declare module '@cabify-dev/redux-polyglot' {
     );
 
     interface PolyglotState {
-        locale: string;
+        locale: string | null;
         phrases: any;
     }
 
-    function polyglotReducer(
-        state: PolyglotState = { locale: null, phrases: null },
-        action: SimpleAction
-    ): PolyglotState;
+    function polyglotReducer(state: PolyglotState, action: SimpleAction): PolyglotState;
 }
