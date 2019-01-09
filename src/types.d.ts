@@ -27,9 +27,15 @@ declare module '@cabify-dev/redux-polyglot' {
         has: (scope: string) => boolean;
         locale: () => string;
         extend: (phrases: any) => void;
-        getDeeperScope: (scope: string) => Polyglot;
+        getDeeperScope: (scope: string) => ReduxPolyglot;
     }
-    function getP(scope: string): ReduxPolyglot;
+    function getP(state: any, options: getPParams): ReduxPolyglot;
+
+    interface getPParams{
+        polyglotScope: string;
+        [any: string]: any;
+    }
+
     function createPolyglotMiddleware(
         actionsToCatch: [string],
         getLocale: getLocaleFunction,
