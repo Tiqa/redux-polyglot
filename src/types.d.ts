@@ -29,7 +29,7 @@ declare module '@cabify-dev/redux-polyglot' {
         extend: (phrases: any) => void;
         getDeeperScope: (scope: string) => ReduxPolyglot;
     }
-    function getP(state: any, options: getPParams): ReduxPolyglot;
+    function getP(state: any, options?: getPParams): ReduxPolyglot;
 
     interface getPParams{
         polyglotScope: string;
