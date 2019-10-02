@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { Provider, connect } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { polyglotReducer } from './reducer';
 import translate from './translate';
@@ -31,20 +31,20 @@ describe('translate enhancer', () => {
     );
     const EnhancedComponent = translate(DummyComponent);
 
-    const tree = renderer.create(
+    const tree = mount(
         <Provider store={fakeStore}>
             <EnhancedComponent />
         </Provider>
-    ).toJSON();
+    );
 
     it('provides a valid p object.', () => {
-        expect(tree.props['data-t']).toBe('hello');
-        expect(tree.props['data-tc']).toBe('Hello');
-        expect(tree.props['data-tu']).toBe('HELLO');
+        expect(tree.find(DummyComponent).find('div').prop('data-t')).toBe('hello');
+        expect(tree.find(DummyComponent).find('div').prop('data-tc')).toBe('Hello');
+        expect(tree.find(DummyComponent).find('div').prop('data-tu')).toBe('HELLO');
     });
 
     it('not inject dispatch prop.', () => {
-        expect(tree.props['data-dispatch']).toBe(false);
+        expect(tree.find(DummyComponent).find('div').prop('data-dispatch')).toBe(false);
     });
 
     it('should return a valid translated component', () => {
@@ -95,21 +95,21 @@ describe('translate enhancer', () => {
             }
 
             render() {
-                return <div>{ this.props.dummy }</div>;
+                return <div>{this.props.dummy}</div>;
             }
         }
 
         const EnhancedTestComponent = translate(TestComponent);
         const ConnectedUnrelatedComponent = connect((state) => ({ dummy: state.dummy }))(UnrelatedComponent);
 
-        renderer.create(
+        mount(
             <Provider store={fakeStore}>
                 <div>
                     <EnhancedTestComponent />
                     <ConnectedUnrelatedComponent />
                 </div>
             </Provider>
-        ).toJSON();
+        );
 
         expect(nbDispatch).toBe(1);
         expect(pChanged).toBe(false);
@@ -169,7 +169,7 @@ describe('translate enhancer', () => {
             }
 
             render() {
-                return <div>{ this.props.dummy }</div>;
+                return <div>{this.props.dummy}</div>;
             }
         }
 
@@ -179,7 +179,7 @@ describe('translate enhancer', () => {
         const EnhancedTestComponent4 = translate(TestComponent4);
         const ConnectedUnrelatedComponent = connect((state) => ({ dummy: state.dummy }))(UnrelatedComponent);
 
-        renderer.create(
+        mount(
             <Provider store={fakeStore}>
                 <div>
                     <EnhancedTestComponent1 />
@@ -189,7 +189,7 @@ describe('translate enhancer', () => {
                     <ConnectedUnrelatedComponent />
                 </div>
             </Provider>
-        ).toJSON();
+        );
 
         expect(nbDispatch).toBe(1);
         expect(pChanged1).toBe(false);
