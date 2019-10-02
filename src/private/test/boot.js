@@ -1,3 +1,8 @@
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
+
 const toBe = (type) => (received) => {
     // eslint-disable-next-line valid-typeof
     const isFunction = typeof received === type;

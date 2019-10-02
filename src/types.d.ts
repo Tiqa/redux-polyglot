@@ -48,4 +48,6 @@ declare module '@cabify-dev/redux-polyglot' {
     }
 
     function polyglotReducer(state: PolyglotState, action: SimpleAction): PolyglotState;
+
+    function useP(config?: getPParams): ReduxPolyglot;
 }

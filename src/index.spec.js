@@ -24,4 +24,7 @@ describe('index', () => {
     it('exports p PropTypes', () => {
         expect(all.PropType).toBeFunction();
     });
+    it('exports useP', () => {
+        expect(all.useP).toBeFunction();
+    });
 });
