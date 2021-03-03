@@ -10,6 +10,7 @@
     "test:all": "npm run -s prepublishOnly",
     "test:watch": "jest --watch --coverage",
     "tw": "npm run test:watch",
+    "publish": "npm publish --access public",
     "prepublishOnly": "node scripts/prepublish.js",
     "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"
