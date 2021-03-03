@@ -1,6 +1,6 @@
 {
   "name": "@cabify/redux-polyglot",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Tool for using Polyglot.js with Redux",
   "main": "./dist/index.js",
   "scripts": {
