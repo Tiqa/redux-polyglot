@@ -1,6 +1,6 @@
 {
   "name": "@cabify/redux-polyglot",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Tool for using Polyglot.js with Redux",
   "main": "./dist/index.js",
   "scripts": {
@@ -10,6 +10,7 @@
     "test:all": "npm run -s prepublishOnly",
     "test:watch": "jest --watch --coverage",
     "tw": "npm run test:watch",
+    "publish": "npm publish --access public",
     "prepublishOnly": "node scripts/prepublish.js",
     "postpublish": "echo --- PUBLISHED ---",
     "lint": "eslint --max-warnings 0 src"

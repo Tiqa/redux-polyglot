@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-declare module '@cabify-dev/redux-polyglot' {
+declare module '@cabify/redux-polyglot' {
     type PolyglotInterpolationOptions = Polyglot.InterpolationOptions;
 
     type translate = (
