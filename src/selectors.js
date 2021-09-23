@@ -127,4 +127,4 @@ const createGetP = (polyglotOptions) => {
 
 const getP = createGetP();
 
-export { getP, getLocale, createGetP };
+export { getP, getLocale, getPhrases, createGetP };
