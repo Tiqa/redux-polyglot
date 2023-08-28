@@ -6,14 +6,17 @@
   "scripts": {
     "build": "babel src --out-dir dist --ignore '*.spec.js'",
     "clean": "rimraf ./dist",
-    "test": "jest --coverage",
-    "test:all": "npm run -s prepublishOnly",
-    "test:watch": "jest --watch --coverage",
-    "tw": "npm run test:watch",
-    "publish": "npm publish --access public",
+    "format:check": "echo 'Skipping for now'",
+    "lint": "eslint --max-warnings 0 src",
+    "prebuild": "yarn clean",
     "prepublishOnly": "node scripts/prepublish.js",
-    "postpublish": "echo --- PUBLISHED ---",
-    "lint": "eslint --max-warnings 0 src"
+    "publish:canary": "npm version prerelease --preid=beta",
+    "publish:major": "npm version major",
+    "publish:minor": "npm version minor",
+    "publish:patch": "npm version patch",
+    "test:ci": "yarn test",
+    "test": "jest --coverage",
+    "typecheck": "echo 'Skipping for now'"
   },
   "repository": {
     "type": "git",
@@ -103,5 +106,9 @@
     "prop-types": "^15.7.2",
     "react": ">= 16.8.0",
     "react-redux": ">= 7.0.0"
+  },
+  "volta": {
+    "node": "18.14.2",
+    "yarn": "1.22.19"
   }
 }
