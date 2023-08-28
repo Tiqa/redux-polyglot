@@ -1,0 +1,7 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test:
+    uses: cabify/javascript-actions/.github/workflows/tests.yml@main
